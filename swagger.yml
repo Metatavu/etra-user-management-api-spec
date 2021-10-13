@@ -675,7 +675,7 @@ components:
         self:
           type: string
         notBefore:
-          type: number
+          type: integer
           format: int32
         lastName:
           type: string
@@ -706,7 +706,7 @@ components:
           items:
             type: object
         createdTimestamp:
-          type: number
+          type: integer
           format: int64
         clientRoles:
           type: object
@@ -716,6 +716,10 @@ components:
             type: object
         attributes:
           type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
         access:
           type: object
         realmRoles:
