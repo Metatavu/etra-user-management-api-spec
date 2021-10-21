@@ -46,34 +46,34 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: List of examples
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GroupShortRepresentation'
-        '400':
+                  $ref: "#/components/schemas/GroupShortRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/groups/{groupId}':
+  "/v1/groups/{groupId}":
     get:
       operationId: findGroup
       summary: Find a groups.
@@ -89,30 +89,30 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       operationId: updateGroup
       summary: Updates groups
@@ -123,7 +123,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupRepresentation'
+              $ref: "#/components/schemas/GroupRepresentation"
         description: Payload
         required: true
       parameters:
@@ -135,30 +135,30 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: deleteGroup
@@ -175,29 +175,29 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull removal
-        '400':
+        "204":
+          description: Empty response indicating successful removal
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
 
-  '/v1/groups/{groupId}/children':
+  "/v1/groups/{groupId}/children":
     post:
       operationId: setOrCreateChildGroup
       summary: Set or create child
@@ -208,7 +208,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupRepresentation'
+              $ref: "#/components/schemas/GroupRepresentation"
         description: Payload
         required: true
       parameters:
@@ -220,30 +220,30 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated or created group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
   /v1/users:
     get:
@@ -268,33 +268,44 @@ paths:
           description: Max results.
           schema:
             type: integer
+        - name: hasAccessToResource
+          in: query
+          description: Filter by access to given resource ID
+          schema:
+            type: string
+            format: UUID
+        - name: userIdentifier
+          in: query
+          description: Filter by user identifier
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: List of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                  $ref: "#/components/schemas/UserRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     post:
       operationId: createUser
@@ -306,36 +317,36 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRepresentation'
+              $ref: "#/components/schemas/UserRepresentation"
         description: Payload
         required: true
       responses:
-        '200':
+        "200":
           description: Created user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}':
+  "/v1/users/{userId}":
     get:
       operationId: findUser
       summary: Find a users.
@@ -351,30 +362,30 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       operationId: updateUser
       summary: Updates users
@@ -385,7 +396,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRepresentation'
+              $ref: "#/components/schemas/UserRepresentation"
         description: Payload
         required: true
       parameters:
@@ -397,30 +408,30 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: deleteUser
@@ -437,28 +448,28 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull removal
-        '400':
+        "204":
+          description: Empty response indicating successful removal
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}/groups':
+  "/v1/users/{userId}/groups":
     get:
       operationId: listUserGroups
       summary: List users groups
@@ -474,34 +485,34 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                  $ref: "#/components/schemas/GroupRepresentation"
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}/groups/{groupId}':
+  "/v1/users/{userId}/groups/{groupId}":
     put:
       operationId: addUserToGroup
       summary: Add user to group
@@ -524,26 +535,26 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull addition
-        '400':
+        "204":
+          description: Empty response indicating successful addition
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: removeUserFromGroup
@@ -567,27 +578,26 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull addition
-        '400':
+        "204":
+          description: Empty response indicating successful addition
+        "400":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
+                $ref: "#/components/schemas/Error"
+        "403":
           description: Attempted to make a call with unauthorized client
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
+                $ref: "#/components/schemas/Error"
+        "500":
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -625,7 +635,7 @@ components:
         subGroups:
           type: array
           items:
-            $ref: '#/components/schemas/GroupShortRepresentation'
+            $ref: "#/components/schemas/GroupShortRepresentation"
 
     GroupRepresentation:
       type: object
@@ -652,7 +662,7 @@ components:
         subGroups:
           type: array
           items:
-            $ref: '#/components/schemas/GroupRepresentation'
+            $ref: "#/components/schemas/GroupRepresentation"
 
     UserRepresentation:
       type: object
@@ -726,3 +736,24 @@ components:
           type: array
           items:
             type: string
+        identifications:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserIdentification"
+
+    UserIdentification:
+      type: object
+      description: User identification object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+          description: Name of the identification
+        value:
+          type: string
+          description: Any string
+        description:
+          type: string
+          description: More detailed description of identification
