@@ -196,7 +196,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-
   "/v1/groups/{groupId}/children":
     post:
       operationId: setOrCreateChildGroup
@@ -599,6 +598,225 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/users/{userId}/cardCodes:
+    get:
+      operationId: listCardCodes
+      summary: List card codes.
+      description: Lists card codes.
+      tags:
+        - CardCodes
+      responses:
+        "200":
+          description: List of card codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CardCode"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of card codes.
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createCardCode
+      summary: Create a card code.
+      description: Creates a new card code.
+      tags:
+        - CardCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardCode"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created card code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/{userId}/cardCodes/{cardCodeId}:
+    get:
+      operationId: findCardCode
+      summary: Find a card code.
+      description: Finds a card code by id.
+      tags:
+        - CardCodes
+      parameters:
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateCardCode
+      summary: Update a card code.
+      description: Updates a card code
+      tags:
+        - CardCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardCode"
+        description: Payload
+        required: true
+      parameters:
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated card code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteCardCode
+      summary: Delete a card code.
+      description: Deletes a card code.
+      tags:
+        - CardCodes
+      parameters:
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -739,21 +957,21 @@ components:
         identifications:
           type: array
           items:
-            $ref: "#/components/schemas/UserIdentification"
+            $ref: "#/components/schemas/CardCode"
 
-    UserIdentification:
+    CardCode:
       type: object
-      description: User identification object
+      description: Card code object
       required:
-        - name
-        - value
+        - code
       properties:
-        name:
+        id:
           type: string
-          description: Name of the identification
-        value:
+          format: uuid
+          readOnly: true
+        code:
           type: string
-          description: Any string
+          description: Card code
         description:
           type: string
-          description: More detailed description of identification
+          description: More detailed description of card code
