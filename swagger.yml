@@ -605,6 +605,14 @@ paths:
       description: Lists card codes.
       tags:
         - CardCodes
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: List of card codes
@@ -651,6 +659,14 @@ paths:
               $ref: "#/components/schemas/CardCode"
         description: Payload
         required: true
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: Created card code
@@ -685,6 +701,13 @@ paths:
       tags:
         - CardCodes
       parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
         - name: cardCodeId
           required: true
           in: path
@@ -737,6 +760,13 @@ paths:
         description: Payload
         required: true
       parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
         - name: cardCodeId
           required: true
           in: path
@@ -782,6 +812,13 @@ paths:
       tags:
         - CardCodes
       parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
         - name: cardCodeId
           required: true
           in: path
