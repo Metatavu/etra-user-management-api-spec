@@ -991,10 +991,6 @@ components:
           type: array
           items:
             type: string
-        cardCodes:
-          type: array
-          items:
-            $ref: "#/components/schemas/CardCode"
 
     CardCode:
       type: object
@@ -1005,6 +1001,11 @@ components:
         id:
           type: string
           format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          description: User keycloak ID
           readOnly: true
         code:
           type: string
