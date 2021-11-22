@@ -47,13 +47,13 @@ paths:
             type: integer
       responses:
         "200":
-          description: List of examples
+          description: List of groups
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/GroupShortRepresentation"
+                  $ref: "#/components/schemas/GroupRepresentation"
         "400":
           description: Invalid request was sent to the server
           content:
