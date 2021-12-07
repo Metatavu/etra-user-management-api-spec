@@ -1307,6 +1307,10 @@ components:
         id:
           type: string
           format: uuid
+        resourceId:
+          type: string
+          format: uuid
+          readOnly: true
         description:
           type: string
         name:
@@ -1321,13 +1325,13 @@ components:
           $ref: "#/components/schemas/PolicyType"
         userIds:
           type: array
-          description: List of user Id's
+          description: List of user Id's. Atleast one user id or group id has to be provided
           items:
             type: string
             format: uuid
         groupIds:
           type: array
-          description: List of group Id's
+          description: List of group Id's. Atleast one user id or group id has to be provided
           items:
             type: string
             format: uuid
