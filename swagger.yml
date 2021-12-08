@@ -939,6 +939,195 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    post:
+      operationId: createResourcePolicy
+      summary: Creates new resource policy
+      description: Creates new resource policy
+      tags:
+        - Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Policy"
+        description: Payload
+        required: true
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Created policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources/{resourceId}/policies/{policyId}":
+    get:
+      operationId: findResourcePolicy
+      summary: Finds resource policy by id
+      description: Finds resource policy by id
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateResourcePolicy
+      summary: Updates resource policy
+      description: Updates resource policy
+      tags:
+        - Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Policy"
+        description: Payload
+        required: true
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteResourcePolicy
+      summary: deletes resource policy
+      description: deletes resource policy
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Empty response indicating successful removal
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -1111,13 +1300,6 @@ components:
         name:
           type: string
           description: Permission name
-        enabled:
-          type: boolean
-          description: Is permission enabled
-        scopes:
-          type: array
-          items:
-            type: string
 
     Policy:
       type: object
@@ -1125,6 +1307,10 @@ components:
         id:
           type: string
           format: uuid
+        resourceId:
+          type: string
+          format: uuid
+          readOnly: true
         description:
           type: string
         name:
@@ -1139,13 +1325,13 @@ components:
           $ref: "#/components/schemas/PolicyType"
         userIds:
           type: array
-          description: List of user Id's
+          description: List of user Id's. Atleast one user id or group id has to be provided
           items:
             type: string
             format: uuid
         groupIds:
           type: array
-          description: List of group Id's
+          description: List of group Id's. Atleast one user id or group id has to be provided
           items:
             type: string
             format: uuid
