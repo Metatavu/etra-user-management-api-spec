@@ -273,6 +273,11 @@ paths:
           schema:
             type: string
             format: UUID
+        - name: hasAccessToResourceWithScope
+          in: query
+          description: Require users to have given scope to the resource defined in hasAccessToResource parameter
+          schema:
+            type: string
         - name: userIdentifier
           in: query
           description: Filter by user identifier
