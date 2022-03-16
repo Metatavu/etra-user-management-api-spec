@@ -255,7 +255,7 @@ paths:
         description: Csv file with users
         required: true
         content:
-          text/plain:
+          application/octet-stream:
             schema:
               type: string
               format: binary
