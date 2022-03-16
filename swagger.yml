@@ -255,10 +255,15 @@ paths:
         description: Csv file with users
         required: true
         content:
-          text/csv:
-            schema:
-              type: string
-              format: binary
+          multipart/form-data:
+            schema:         
+              type: object
+              properties:
+                usersFile:
+                  type: string
+                  format: binary
+              required:
+                - usersFile
               
       responses:
         "201":
