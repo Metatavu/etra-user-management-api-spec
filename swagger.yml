@@ -255,10 +255,9 @@ paths:
         description: Csv file with users
         required: true
         content:
-          application/octet-stream:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: "#/components/schemas/CSVFile"
               
       responses:
         "201":
@@ -1380,6 +1379,15 @@ components:
         name:
           type: string
           description: Permission name
+    
+    CSVFile:
+      type: object
+      description: Csv file
+      properties:
+        content:
+          type: string
+      required:
+        - content
 
     Policy:
       type: object
