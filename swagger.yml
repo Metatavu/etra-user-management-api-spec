@@ -21,6 +21,21 @@ paths:
             text/plain:
               schema:
                 type: string
+  
+  /v1/system/tasks/pending:
+    get:
+      operationId: getPendingTasksCount
+      summary: Replies with pending tasks count
+      description: Replies with pending tasks count
+      tags:
+        - System
+      responses:
+        "200":
+          description: Pong
+          content:
+            text/plain:
+              schema:
+                type: string
 
   /v1/groups:
     get:
@@ -157,7 +172,14 @@ paths:
           description: Internal server error
           content:
             application/json:
-              schema:
+                @ConfigProperty(name = "quarkus.datasource.jdbc.url")
+  private lateinit var jdbcUrl: String
+
+  @ConfigProperty(name = "quarkus.datasource.username")
+  private lateinit var jdbcUsername: String
+
+  @ConfigProperty(name = "quarkus.datasource.password")
+  private lateinit var jdbcPassword: Stringschema:
                 $ref: "#/components/schemas/Error"
 
     delete:
