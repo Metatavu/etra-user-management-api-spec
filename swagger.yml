@@ -172,14 +172,7 @@ paths:
           description: Internal server error
           content:
             application/json:
-                @ConfigProperty(name = "quarkus.datasource.jdbc.url")
-  private lateinit var jdbcUrl: String
-
-  @ConfigProperty(name = "quarkus.datasource.username")
-  private lateinit var jdbcUsername: String
-
-  @ConfigProperty(name = "quarkus.datasource.password")
-  private lateinit var jdbcPassword: Stringschema:
+              schema:
                 $ref: "#/components/schemas/Error"
 
     delete:
