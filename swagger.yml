@@ -22,16 +22,16 @@ paths:
               schema:
                 type: string
   
-  /v1/system/tasks/pending:
+  /v1/system/tasks/count:
     get:
-      operationId: getPendingTasksCount
-      summary: Replies with pending tasks count
-      description: Replies with pending tasks count
+      operationId: getTasksCount
+      summary: Replies with tasks count
+      description: Replies with tasks count
       tags:
         - System
       responses:
         "200":
-          description: Pong
+          description: Tasks count
           content:
             text/plain:
               schema:
