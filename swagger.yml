@@ -21,6 +21,21 @@ paths:
             text/plain:
               schema:
                 type: string
+  
+  /v1/system/tasks/count:
+    get:
+      operationId: getTasksCount
+      summary: Replies with tasks count
+      description: Replies with tasks count
+      tags:
+        - System
+      responses:
+        "200":
+          description: Tasks count
+          content:
+            text/plain:
+              schema:
+                type: string
 
   /v1/groups:
     get:
@@ -252,11 +267,13 @@ paths:
       tags:
         - Users
       requestBody:
+        description: Csv file with users
+        required: true
         content:
-          text/csv:
+          application/json:
             schema:
-              type: string
-              format: binary
+              $ref: "#/components/schemas/CSVFile"
+              
       responses:
         "201":
           description: Successful request
@@ -384,7 +401,44 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
+  
+  "/v1/users/{userId}/resetPassword":
+    put:
+      operationId: resetUserPassword
+      summary: Reset an user password
+      description: Reset an user password
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Succesful password reset
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      
   "/v1/users/{userId}":
     get:
       operationId: findUser
@@ -1340,6 +1394,15 @@ components:
         name:
           type: string
           description: Permission name
+    
+    CSVFile:
+      type: object
+      description: Csv file
+      properties:
+        content:
+          type: string
+      required:
+        - content
 
     Policy:
       type: object
