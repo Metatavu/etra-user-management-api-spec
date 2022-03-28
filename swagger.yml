@@ -91,7 +91,7 @@ paths:
   "/v1/groups/{groupId}":
     get:
       operationId: findGroup
-      summary: Find a groups.
+      summary: Find a group.
       description: Finds a group by id.
       tags:
         - Groups
@@ -240,6 +240,49 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupRepresentation"
+        "400":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Attempted to make a call with unauthorized client
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  "/v1/groups/{groupId}/users":
+    get:
+      operationId: listGroupUsers
+      summary: List group users
+      description: List group users
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Group users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserRepresentation"
         "400":
           description: Invalid request was sent to the server
           content:
