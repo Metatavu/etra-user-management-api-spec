@@ -242,6 +242,7 @@ paths:
               type: array
               items:
                 type: string
+                format: uuid
         description: Payload
         required: true
       parameters:
@@ -261,6 +262,7 @@ paths:
                 type: array
                 items:
                   type: string
+                  format: uuid
         "default":
           description: Invalid request was sent to the server
           content:
