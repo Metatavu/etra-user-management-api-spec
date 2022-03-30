@@ -69,20 +69,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -110,20 +98,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -156,20 +132,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -192,20 +156,8 @@ paths:
       responses:
         "204":
           description: Empty response indicating successful removal
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -240,25 +192,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GroupRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  
+                
   "/v1/groups/{groupId}/users":
     get:
       operationId: listGroupUsers
@@ -283,20 +223,48 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
+    put:
+      operationId: updateGroupUsers
+      summary: Adds users to a group
+      description: Adds users to a group
+      tags:
+        - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: Payload
+        required: true
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Group users
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
+                type: array
+                items:
+                  type: string
+                  format: uuid
+        "default":
+          description: Invalid request was sent to the server
           content:
             application/json:
               schema:
@@ -320,20 +288,8 @@ paths:
       responses:
         "201":
           description: Successful request
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -387,20 +343,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -426,20 +370,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -463,20 +395,8 @@ paths:
       responses:
         "200":
           description: Succesful password reset
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -504,20 +424,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -550,20 +458,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -586,20 +482,8 @@ paths:
       responses:
         "204":
           description: Empty response indicating successful removal
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -629,20 +513,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupRepresentation"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -673,20 +545,8 @@ paths:
       responses:
         "204":
           description: Empty response indicating successful addition
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -716,20 +576,8 @@ paths:
       responses:
         "204":
           description: Empty response indicating successful addition
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -765,20 +613,8 @@ paths:
                 type: integer
                 format: int64
               description: Total count of card codes.
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -811,20 +647,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CardCode"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -859,26 +683,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CardCode"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -918,26 +724,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CardCode"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -966,26 +754,8 @@ paths:
       responses:
         "204":
           description: Success
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "404":
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1015,20 +785,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Permission"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1058,20 +816,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Policy"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1104,20 +850,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Policy"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1152,20 +886,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Policy"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1205,20 +927,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Policy"
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
@@ -1247,20 +957,8 @@ paths:
       responses:
         "204":
           description: Empty response indicating successful removal
-        "400":
+        "default":
           description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "403":
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Internal server error
           content:
             application/json:
               schema:
