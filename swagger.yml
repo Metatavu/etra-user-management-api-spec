@@ -1101,6 +1101,10 @@ components:
           type: array
           items:
             type: string
+        cardCodes:
+          type: array
+          items:
+            type: string
 
     CardCode:
       type: object
