@@ -849,13 +849,6 @@ paths:
       description: Deletes a resource.
       tags:
         - Resources
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResourceRepresentation"
-        description: Payload
-        required: true
       parameters:
         - name: resourceId
           required: true
