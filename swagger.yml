@@ -795,9 +795,9 @@ paths:
       tags:
         - Resources
       parameters:
-        - name: search
+        - name: name
           in: query
-          description: search string
+          description: name string
           schema:
             type: string
       responses:
@@ -1211,6 +1211,8 @@ components:
     ResourceRepresentation:
       type: object
       description: Resource representation
+      required:
+        - name
       properties:
         id:
           type: string
@@ -1218,7 +1220,10 @@ components:
           readOnly: true
         name:
           type: string
-
+        scopes:
+          type: array
+          items:
+            type: string
 
     CardCode:
       type: object
