@@ -50,14 +50,14 @@ paths:
           description: search string
           schema:
             type: string
-        - name: first
+        - name: page
           in: query
-          description: First result.
+          description: Page number. Defaults to 0
           schema:
             type: integer
-        - name: max
+        - name: pageSize
           in: query
-          description: Max results.
+          description: Page size. Defaults to 10
           schema:
             type: integer
       responses:
@@ -334,16 +334,6 @@ paths:
           description: search string
           schema:
             type: string
-        - name: first
-          in: query
-          description: First result.
-          schema:
-            type: integer
-        - name: max
-          in: query
-          description: Max results.
-          schema:
-            type: integer
         - name: hasAccessToResource
           in: query
           description: Filter by access to given resource ID
@@ -360,6 +350,16 @@ paths:
           description: Filter by user identifier
           schema:
             type: string
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
       responses:
         "200":
           description: List of users
