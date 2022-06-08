@@ -50,14 +50,14 @@ paths:
           description: search string
           schema:
             type: string
-        - name: page
+        - name: first
           in: query
-          description: Page number. Defaults to 0
+          description: First result.
           schema:
             type: integer
-        - name: pageSize
+        - name: max
           in: query
-          description: Page size. Defaults to 10
+          description: Max results.
           schema:
             type: integer
       responses:
@@ -69,12 +69,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/GroupRepresentation"
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-                format: int64
-              description: Total count of groups.
         "default":
           description: Invalid request was sent to the server
           content:
