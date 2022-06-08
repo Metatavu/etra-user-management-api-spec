@@ -334,16 +334,6 @@ paths:
           description: search string
           schema:
             type: string
-        - name: first
-          in: query
-          description: First result.
-          schema:
-            type: integer
-        - name: max
-          in: query
-          description: Max results.
-          schema:
-            type: integer
         - name: hasAccessToResource
           in: query
           description: Filter by access to given resource ID
@@ -360,6 +350,16 @@ paths:
           description: Filter by user identifier
           schema:
             type: string
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size
+          schema:
+            type: integer
       responses:
         "200":
           description: List of users
@@ -369,6 +369,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserRepresentation"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of card codes.
         "default":
           description: Invalid request was sent to the server
           content:
