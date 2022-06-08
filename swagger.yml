@@ -352,12 +352,12 @@ paths:
             type: string
         - name: page
           in: query
-          description: Page number. Defaults to 0
+          description: Page number
           schema:
             type: integer
         - name: pageSize
           in: query
-          description: Page size. Defaults to 10
+          description: Page size
           schema:
             type: integer
       responses:
