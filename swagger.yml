@@ -310,7 +310,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CSVFile"
-
       responses:
         "201":
           description: Successful request
