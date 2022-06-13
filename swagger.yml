@@ -351,7 +351,7 @@ paths:
             type: string
         - name: enabled
           in: query
-          description: Default to false. When set to true, the X-Total-Count header includes the disabled users (Incompatible).
+          description: Default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
           schema:
             type: boolean
         - name: page
