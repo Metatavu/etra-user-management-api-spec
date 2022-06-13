@@ -21,7 +21,7 @@ paths:
             text/plain:
               schema:
                 type: string
-  
+
   /v1/system/tasks/count:
     get:
       operationId: getTasksCount
@@ -224,7 +224,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-                
+
   "/v1/groups/{groupId}/users":
     get:
       operationId: listGroupUsers
@@ -310,7 +310,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CSVFile"
-              
+
       responses:
         "201":
           description: Successful request
@@ -350,6 +350,11 @@ paths:
           description: Filter by user identifier
           schema:
             type: string
+        - name: enabled
+          in: query
+          description: Default to false. When set to true, the X-Total-Count header includes the disabled users (Incompatible).
+          schema:
+            type: boolean
         - name: page
           in: query
           description: Page number
@@ -408,7 +413,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  
+
   "/v1/users/{userId}/resetPassword":
     put:
       operationId: resetUserPassword
@@ -433,7 +438,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-      
+
   "/v1/users/{userId}":
     get:
       operationId: findUser
@@ -1268,7 +1273,7 @@ components:
         name:
           type: string
           description: Permission name
-    
+
     CSVFile:
       type: object
       description: Csv file
