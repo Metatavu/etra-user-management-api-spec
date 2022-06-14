@@ -1217,10 +1217,6 @@ components:
           type: array
           items:
             type: string
-        cardCodes:
-          type: array
-          items:
-            type: string
 
     ResourceRepresentation:
       type: object
