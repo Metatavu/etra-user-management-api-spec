@@ -1144,6 +1144,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/GroupRepresentation"
+        userIds:
+          type: array
+          items:
+            type: string
+            format: uuid
 
     UserRepresentation:
       type: object
