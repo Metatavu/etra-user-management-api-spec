@@ -22,6 +22,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/tasks/count:
+    get:
+      operationId: getTasksCount
+      summary: Replies with tasks count
+      description: Replies with tasks count
+      tags:
+        - System
+      responses:
+        "200":
+          description: Tasks count
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/groups:
     get:
       operationId: listGroups
@@ -46,37 +61,51 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
-          description: List of examples
+        "200":
+          description: List of groups
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GroupShortRepresentation'
-        '400':
+                  $ref: "#/components/schemas/GroupRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createGroup
+      summary: Create group
+      description: Create new group
+      tags:
+        - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GroupRepresentation"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
+                $ref: "#/components/schemas/GroupRepresentation"
+        "default":
+          description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/groups/{groupId}':
+  "/v1/groups/{groupId}":
     get:
       operationId: findGroup
-      summary: Find a groups.
+      summary: Find a group.
       description: Finds a group by id.
       tags:
         - Groups
@@ -89,30 +118,18 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       operationId: updateGroup
       summary: Updates groups
@@ -123,7 +140,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupRepresentation'
+              $ref: "#/components/schemas/GroupRepresentation"
         description: Payload
         required: true
       parameters:
@@ -135,30 +152,18 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: deleteGroup
@@ -175,29 +180,16 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull removal
-        '400':
+        "204":
+          description: Empty response indicating successful removal
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-
-  '/v1/groups/{groupId}/children':
+  "/v1/groups/{groupId}/children":
     post:
       operationId: setOrCreateChildGroup
       summary: Set or create child
@@ -208,7 +200,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GroupRepresentation'
+              $ref: "#/components/schemas/GroupRepresentation"
         description: Payload
         required: true
       parameters:
@@ -220,30 +212,113 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated or created group
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                $ref: "#/components/schemas/GroupRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{groupId}/users":
+    get:
+      operationId: listGroupUsers
+      summary: List group users
+      description: List group users
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Group users
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserRepresentation"
+        "default":
+          description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateGroupUsers
+      summary: Adds users to a group
+      description: Adds users to a group
+      tags:
+        - Groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: Payload
+        required: true
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Group users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/upload:
+    post:
+      operationId: createUsersFromCsv
+      summary: Create users from a csv-file.
+      description: Create users from a csv-file.
+      tags:
+        - Users
+      requestBody:
+        description: Csv file with users
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CSVFile"
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /v1/users:
     get:
@@ -258,43 +333,58 @@ paths:
           description: search string
           schema:
             type: string
-        - name: first
+        - name: hasAccessToResource
           in: query
-          description: First result.
+          description: Filter by access to given resource ID
+          schema:
+            type: string
+            format: UUID
+        - name: hasAccessToResourceWithScope
+          in: query
+          description: Require users to have given scope to the resource defined in hasAccessToResource parameter
+          schema:
+            type: string
+        - name: userIdentifier
+          in: query
+          description: Filter by user identifier
+          schema:
+            type: string
+        - name: enabled
+          in: query
+          description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          description: Page number
           schema:
             type: integer
-        - name: max
+        - name: pageSize
           in: query
-          description: Max results.
+          description: Page size
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: List of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                  $ref: "#/components/schemas/UserRepresentation"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of card codes.
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     post:
       operationId: createUser
@@ -306,36 +396,49 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRepresentation'
+              $ref: "#/components/schemas/UserRepresentation"
         description: Payload
         required: true
       responses:
-        '200':
+        "200":
           description: Created user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}':
+  "/v1/users/{userId}/resetPassword":
+    put:
+      operationId: resetUserPassword
+      summary: Reset an user password
+      description: Reset an user password
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Succesful password reset
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/users/{userId}":
     get:
       operationId: findUser
       summary: Find a users.
@@ -351,30 +454,18 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
     put:
       operationId: updateUser
       summary: Updates users
@@ -385,7 +476,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserRepresentation'
+              $ref: "#/components/schemas/UserRepresentation"
         description: Payload
         required: true
       parameters:
@@ -397,30 +488,18 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Updated user
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserRepresentation'
-        '400':
+                $ref: "#/components/schemas/UserRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: deleteUser
@@ -437,28 +516,16 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull removal
-        '400':
+        "204":
+          description: Empty response indicating successful removal
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}/groups':
+  "/v1/users/{userId}/groups":
     get:
       operationId: listUserGroups
       summary: List users groups
@@ -474,34 +541,22 @@ paths:
             type: string
             format: uuid
       responses:
-        '200':
+        "200":
           description: Example
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GroupRepresentation'
-        '400':
+                  $ref: "#/components/schemas/GroupRepresentation"
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
-  '/v1/users/{userId}/groups/{groupId}':
+  "/v1/users/{userId}/groups/{groupId}":
     put:
       operationId: addUserToGroup
       summary: Add user to group
@@ -524,26 +579,14 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull addition
-        '400':
+        "204":
+          description: Empty response indicating successful addition
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
     delete:
       operationId: removeUserFromGroup
@@ -567,27 +610,475 @@ paths:
             type: string
             format: uuid
       responses:
-        '204':
-          description: Empty response indicating successfull addition
-        '400':
+        "204":
+          description: Empty response indicating successful addition
+        "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Attempted to make a call with unauthorized client
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '500':
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: "#/components/schemas/Error"
 
+  /v1/users/{userId}/cardCodes:
+    get:
+      operationId: listCardCodes
+      summary: List card codes.
+      description: Lists card codes.
+      tags:
+        - CardCodes
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of card codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CardCode"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of card codes.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createCardCode
+      summary: Create a card code.
+      description: Creates a new card code.
+      tags:
+        - CardCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardCode"
+        description: Payload
+        required: true
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Created card code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/{userId}/cardCodes/{cardCodeId}:
+    get:
+      operationId: findCardCode
+      summary: Find a card code.
+      description: Finds a card code by id.
+      tags:
+        - CardCodes
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateCardCode
+      summary: Update a card code.
+      description: Updates a card code
+      tags:
+        - CardCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardCode"
+        description: Payload
+        required: true
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated card code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CardCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteCardCode
+      summary: Delete a card code.
+      description: Deletes a card code.
+      tags:
+        - CardCodes
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: users id
+          schema:
+            type: string
+            format: uuid
+        - name: cardCodeId
+          required: true
+          in: path
+          description: card code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources":
+    get:
+      operationId: listResources
+      summary: List resources.
+      description: Lists resources.
+      tags:
+        - Resources
+      parameters:
+        - name: name
+          in: query
+          description: name string
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of Resources
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ResourceRepresentation"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createResource
+      summary: Create a resource.
+      description: Creates a new resource.
+      tags:
+        - Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResourceRepresentation"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created resource
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceRepresentation"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources/{resourceId}":
+    delete:
+      operationId: deleteResource
+      summary: Delete a resource.
+      description: Deletes a resource.
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Empty response indicating successful removal
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources/{resourceId}/permissions":
+    get:
+      operationId: listResourcePermissions
+      summary: Lists resource permissions.
+      description: Lists resource permissions.
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of permissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Permission"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources/{resourceId}/policies":
+    get:
+      operationId: listResourcePolicies
+      summary: Lists resource policies.
+      description: Lists resource policies.
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of policies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Policy"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createResourcePolicy
+      summary: Creates new resource policy
+      description: Creates new resource policy
+      tags:
+        - Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Policy"
+        description: Payload
+        required: true
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Created policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/resources/{resourceId}/policies/{policyId}":
+    get:
+      operationId: findResourcePolicy
+      summary: Finds resource policy by id
+      description: Finds resource policy by id
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateResourcePolicy
+      summary: Updates resource policy
+      description: Updates resource policy
+      tags:
+        - Resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Policy"
+        description: Payload
+        required: true
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteResourcePolicy
+      summary: deletes resource policy
+      description: deletes resource policy
+      tags:
+        - Resources
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: Resource id
+          schema:
+            type: string
+            format: uuid
+        - name: policyId
+          required: true
+          in: path
+          description: Policy id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Empty response indicating successful removal
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   securitySchemes:
@@ -625,7 +1116,7 @@ components:
         subGroups:
           type: array
           items:
-            $ref: '#/components/schemas/GroupShortRepresentation'
+            $ref: "#/components/schemas/GroupShortRepresentation"
 
     GroupRepresentation:
       type: object
@@ -652,7 +1143,7 @@ components:
         subGroups:
           type: array
           items:
-            $ref: '#/components/schemas/GroupRepresentation'
+            $ref: "#/components/schemas/GroupRepresentation"
 
     UserRepresentation:
       type: object
@@ -726,3 +1217,104 @@ components:
           type: array
           items:
             type: string
+
+    ResourceRepresentation:
+      type: object
+      description: Resource representation
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+
+    CardCode:
+      type: object
+      description: Card code object
+      required:
+        - code
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          description: User keycloak ID
+          readOnly: true
+        code:
+          type: string
+          description: Card code
+        description:
+          type: string
+          description: More detailed description of card code
+
+    Permission:
+      type: object
+      description: Permission object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          description: Permission name
+
+    CSVFile:
+      type: object
+      description: Csv file
+      properties:
+        content:
+          type: string
+      required:
+        - content
+
+    Policy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        resourceId:
+          type: string
+          format: uuid
+          readOnly: true
+        description:
+          type: string
+        name:
+          type: string
+        permissionIds:
+          type: array
+          description: List of permission ids
+          items:
+            type: string
+            format: uuid
+        type:
+          $ref: "#/components/schemas/PolicyType"
+        userIds:
+          type: array
+          description: List of user Id's. Atleast one user id or group id has to be provided
+          items:
+            type: string
+            format: uuid
+        groupIds:
+          type: array
+          description: List of group Id's. Atleast one user id or group id has to be provided
+          items:
+            type: string
+            format: uuid
+
+    PolicyType:
+      type: string
+      enum:
+        - USER
+        - GROUP
