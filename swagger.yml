@@ -1132,10 +1132,20 @@ components:
           type: string
         clientRoles:
           type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
         attributes:
           type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
         access:
           type: object
+          additionalProperties:
+            type: boolean
         realmRoles:
           type: array
           items:
