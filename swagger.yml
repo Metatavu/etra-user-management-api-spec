@@ -364,9 +364,9 @@ paths:
           description: Page size
           schema:
             type: integer
-        - name: brief
+        - name: includeGroupsAndRoles
           in: query
-          description: Return brief user representation
+          description: Return groups and roles
           schema:
             type: boolean
       responses:
