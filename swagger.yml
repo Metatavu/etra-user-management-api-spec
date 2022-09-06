@@ -364,6 +364,11 @@ paths:
           description: Page size
           schema:
             type: integer
+        - name: brief
+          in: query
+          description: Return brief user representation
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of users
