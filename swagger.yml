@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   version: 1.0.0
-  title: Etra user management - API Spec
+  title: Pickway Cloud API-spec
 
 security:
   - bearerAuth: []
@@ -37,623 +37,39 @@ paths:
               schema:
                 type: string
 
-  /v1/groups:
+  /v1/customers:
     get:
-      operationId: listGroups
-      summary: List Groups.
-      description: Lists Groups.
+      operationId: listCustomers
+      summary: Lists customers.
+      description: Lists customers.
       tags:
-        - Groups
+        - Customers
       parameters:
-        - name: search
-          in: query
-          description: search string
-          schema:
-            type: string
-        - name: first
-          in: query
-          description: First result.
-          schema:
-            type: integer
-        - name: max
-          in: query
-          description: Max results.
-          schema:
-            type: integer
-      responses:
-        "200":
-          description: List of groups
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      operationId: createGroup
-      summary: Create group
-      description: Create new group
-      tags:
-        - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GroupRepresentation"
-        description: Payload
-        required: true
-      responses:
-        "200":
-          description: Created group
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/groups/{groupId}":
-    get:
-      operationId: findGroup
-      summary: Find a group.
-      description: Finds a group by id.
-      tags:
-        - Groups
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: groups id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Example
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      operationId: updateGroup
-      summary: Updates groups
-      description: Updates group, ignores subgroups
-      tags:
-        - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GroupRepresentation"
-        description: Payload
-        required: true
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: group id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Updated group
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-    delete:
-      operationId: deleteGroup
-      summary: Deletes group
-      description: Deletes group
-      tags:
-        - Groups
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: group id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "204":
-          description: Empty response indicating successful removal
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/groups/{groupId}/children":
-    post:
-      operationId: setOrCreateChildGroup
-      summary: Set or create child
-      description: Will just set the parent if group exists. Otherwise will create the group and set the parent.
-      tags:
-        - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GroupRepresentation"
-        description: Payload
-        required: true
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: group id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Updated or created group
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/groups/{groupId}/users":
-    get:
-      operationId: listGroupUsers
-      summary: List group users
-      description: List group users
-      tags:
-        - Groups
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: groups id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Group users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      operationId: updateGroupUsers
-      summary: Adds users to a group
-      description: Adds users to a group
-      tags:
-        - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
-        description: Payload
-        required: true
-      parameters:
-        - name: groupId
-          required: true
-          in: path
-          description: groups id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Group users
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  format: uuid
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /v1/users/upload:
-    post:
-      operationId: createUsersFromCsv
-      summary: Create users from a csv-file.
-      description: Create users from a csv-file.
-      tags:
-        - Users
-      requestBody:
-        description: Csv file with users
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CSVFile"
-      responses:
-        "201":
-          description: Successful request
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /v1/users:
-    get:
-      operationId: listUsers
-      summary: List Users.
-      description: Lists Users.
-      tags:
-        - Users
-      parameters:
-        - name: search
-          in: query
-          description: search string
-          schema:
-            type: string
-        - name: hasAccessToResource
-          in: query
-          description: Filter by access to given resource ID
-          schema:
-            type: string
-            format: UUID
-        - name: hasAccessToResourceWithScope
-          in: query
-          description: Require users to have given scope to the resource defined in hasAccessToResource parameter
-          schema:
-            type: string
-        - name: userIdentifier
-          in: query
-          description: Filter by user identifier
-          schema:
-            type: string
-        - name: enabled
-          in: query
-          description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
-          schema:
-            type: boolean
         - name: page
           in: query
-          description: Page number
+          description: Page number. Defaults to 0
           schema:
             type: integer
         - name: pageSize
           in: query
-          description: Page size
+          description: Page size. Defaults to 10
           schema:
             type: integer
-        - name: includeGroupsAndRoles
-          in: query
-          description: Return groups and roles
-          schema:
-            type: boolean
       responses:
         "200":
-          description: List of users
+          description: List of customers
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserRepresentation"
+                  $ref: "#/components/schemas/Customer"
           headers:
             X-Total-Count:
               schema:
                 type: integer
                 format: int64
-              description: Total count of card codes.
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-    post:
-      operationId: createUser
-      summary: Create user
-      description: Create new user
-      tags:
-        - Users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRepresentation"
-        description: Payload
-        required: true
-      responses:
-        "200":
-          description: Created user
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/users/{userId}/resetPassword":
-    put:
-      operationId: resetUserPassword
-      summary: Reset an user password
-      description: Reset an user password
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: user id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Succesful password reset
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/users/{userId}":
-    get:
-      operationId: findUser
-      summary: Find a users.
-      description: Finds a user by id.
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Example
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    put:
-      operationId: updateUser
-      summary: Updates users
-      description: Updates user, ignores subusers
-      tags:
-        - Users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserRepresentation"
-        description: Payload
-        required: true
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: user id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Updated user
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UserRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-    delete:
-      operationId: deleteUser
-      summary: Deletes user
-      description: Deletes user
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: user id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "204":
-          description: Empty response indicating successful removal
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/users/{userId}/groups":
-    get:
-      operationId: listUserGroups
-      summary: List users groups
-      description: Lists users groups
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Example
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/GroupRepresentation"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/users/{userId}/groups/{groupId}":
-    put:
-      operationId: addUserToGroup
-      summary: Add user to group
-      description: Adds user to group
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-        - name: groupId
-          required: true
-          in: path
-          description: group id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "204":
-          description: Empty response indicating successful addition
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-    delete:
-      operationId: removeUserFromGroup
-      summary: Remove user from group
-      description: Removes user from group
-      tags:
-        - Users
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-        - name: groupId
-          required: true
-          in: path
-          description: group id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "204":
-          description: Empty response indicating successful addition
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  /v1/users/{userId}/cardCodes:
-    get:
-      operationId: listCardCodes
-      summary: List card codes.
-      description: Lists card codes.
-      tags:
-        - CardCodes
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: List of card codes
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CardCode"
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-                format: int64
-              description: Total count of card codes.
+              description: Total count of customers with given filters.
         "default":
           description: Invalid request was sent to the server
           content:
@@ -661,33 +77,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      operationId: createCardCode
-      summary: Create a card code.
-      description: Creates a new card code.
+      operationId: createCustomer
+      summary: Create a customer.
+      description: Creates a new customer.
       tags:
-        - CardCodes
+        - Customers
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CardCode"
+              $ref: "#/components/schemas/Customer"
         description: Payload
         required: true
-      parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
       responses:
         "200":
-          description: Created card code
+          description: Created Customer
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CardCode"
+                $ref: "#/components/schemas/Customer"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -695,35 +103,28 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/users/{userId}/cardCodes/{cardCodeId}:
+  "/v1/customers/{customerId}":
     get:
-      operationId: findCardCode
-      summary: Find a card code.
-      description: Finds a card code by id.
+      operationId: findCustomer
+      summary: Find a customer.
+      description: Finds a customer by id.
       tags:
-        - CardCodes
+        - Customers
       parameters:
-        - name: userId
+        - name: customerId
           required: true
           in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-        - name: cardCodeId
-          required: true
-          in: path
-          description: card code id
+          description: customer id
           schema:
             type: string
             format: uuid
       responses:
         "200":
-          description: Card
+          description: Customer
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CardCode"
+                $ref: "#/components/schemas/Customer"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -731,40 +132,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     put:
-      operationId: updateCardCode
-      summary: Update a card code.
-      description: Updates a card code
+      operationId: updateCustomer
+      summary: Update a customer.
+      description: Updates a customer
       tags:
-        - CardCodes
+        - Customers
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CardCode"
+              $ref: "#/components/schemas/Customer"
         description: Payload
         required: true
       parameters:
-        - name: userId
+        - name: customerId
           required: true
           in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-        - name: cardCodeId
-          required: true
-          in: path
-          description: card code id
+          description: customer id
           schema:
             type: string
             format: uuid
       responses:
         "200":
-          description: Updated card code
+          description: Updated Customer
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CardCode"
+                $ref: "#/components/schemas/Customer"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -772,23 +166,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     delete:
-      operationId: deleteCardCode
-      summary: Delete a card code.
-      description: Deletes a card code.
+      operationId: deleteCustomer
+      summary: Delete a customer.
+      description: Deletes a customer.
       tags:
-        - CardCodes
+        - Customers
       parameters:
-        - name: userId
+        - name: customerId
           required: true
           in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
-        - name: cardCodeId
-          required: true
-          in: path
-          description: card code id
+          description: customer id
           schema:
             type: string
             format: uuid
@@ -802,28 +189,84 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/resources":
-    get:
-      operationId: listResources
-      summary: List resources.
-      description: Lists resources.
+  /v1/customers/{customerId}/items/upload:
+    post:
+      operationId: createItemsFromCsv
+      summary: Create items from a csv-file.
+      description: Create items from a csv-file.
       tags:
-        - Resources
+        - Items
+      requestBody:
+        description: Csv file with items
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CSVFile"
       parameters:
-        - name: name
+        - name: customerId
+          required: true
+          in: path
+          description: Customer id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/machines:
+    get:
+      operationId: listMachines
+      summary: Lists machines.
+      description: Lists machines.
+      tags:
+        - Machines
+      parameters:
+        - name: customerId
           in: query
-          description: name string
+          description: Filter by customer ID
           schema:
             type: string
+            format: uuid
+            description: Customer ID
+        - name: machineCode
+          in: query
+          description: Filter by machine code
+          schema:
+            type: string
+            description: Machine code
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
       responses:
         "200":
-          description: List of Resources
+          description: List of machines
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ResourceRepresentation"
+                  $ref: "#/components/schemas/Machine"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of machines with given filters.
         "default":
           description: Invalid request was sent to the server
           content:
@@ -831,25 +274,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     post:
-      operationId: createResource
-      summary: Create a resource.
-      description: Creates a new resource.
+      operationId: createMachine
+      summary: Create a machine.
+      description: Creates a new machine.
       tags:
-        - Resources
+        - Machines
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ResourceRepresentation"
+              $ref: "#/components/schemas/Machine"
         description: Payload
         required: true
       responses:
         "200":
-          description: Created resource
+          description: Created Machine
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ResourceRepresentation"
+                $ref: "#/components/schemas/Machine"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -857,156 +300,28 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/resources/{resourceId}":
-    delete:
-      operationId: deleteResource
-      summary: Delete a resource.
-      description: Deletes a resource.
-      tags:
-        - Resources
-      parameters:
-        - name: resourceId
-          required: true
-          in: path
-          description: resource id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "204":
-          description: Empty response indicating successful removal
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/resources/{resourceId}/permissions":
+  "/v1/machines/{machineId}":
     get:
-      operationId: listResourcePermissions
-      summary: Lists resource permissions.
-      description: Lists resource permissions.
+      operationId: findMachine
+      summary: Find a machine.
+      description: Finds a machine by id.
       tags:
-        - Resources
+        - Machines
       parameters:
-        - name: resourceId
+        - name: machineId
           required: true
           in: path
-          description: Resource id
+          description: machine id
           schema:
             type: string
             format: uuid
       responses:
         "200":
-          description: List of permissions
+          description: Machine
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Permission"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/resources/{resourceId}/policies":
-    get:
-      operationId: listResourcePolicies
-      summary: Lists resource policies.
-      description: Lists resource policies.
-      tags:
-        - Resources
-      parameters:
-        - name: resourceId
-          required: true
-          in: path
-          description: Resource id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: List of policies
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Policy"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-    post:
-      operationId: createResourcePolicy
-      summary: Creates new resource policy
-      description: Creates new resource policy
-      tags:
-        - Resources
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Policy"
-        description: Payload
-        required: true
-      parameters:
-        - name: resourceId
-          required: true
-          in: path
-          description: Resource id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Created policy
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Policy"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  "/v1/resources/{resourceId}/policies/{policyId}":
-    get:
-      operationId: findResourcePolicy
-      summary: Finds resource policy by id
-      description: Finds resource policy by id
-      tags:
-        - Resources
-      parameters:
-        - name: resourceId
-          required: true
-          in: path
-          description: Resource id
-          schema:
-            type: string
-            format: uuid
-        - name: policyId
-          required: true
-          in: path
-          description: Policy id
-          schema:
-            type: string
-            format: uuid
-      responses:
-        "200":
-          description: Found policy
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Policy"
+                $ref: "#/components/schemas/Machine"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -1014,40 +329,33 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     put:
-      operationId: updateResourcePolicy
-      summary: Updates resource policy
-      description: Updates resource policy
+      operationId: updateMachine
+      summary: Update a machine.
+      description: Updates a machine
       tags:
-        - Resources
+        - Machines
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Policy"
+              $ref: "#/components/schemas/Machine"
         description: Payload
         required: true
       parameters:
-        - name: resourceId
+        - name: machineId
           required: true
           in: path
-          description: Resource id
-          schema:
-            type: string
-            format: uuid
-        - name: policyId
-          required: true
-          in: path
-          description: Policy id
+          description: machine id
           schema:
             type: string
             format: uuid
       responses:
         "200":
-          description: Updated policy
+          description: Updated Machine
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Policy"
+                $ref: "#/components/schemas/Machine"
         "default":
           description: Invalid request was sent to the server
           content:
@@ -1055,29 +363,1189 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
     delete:
-      operationId: deleteResourcePolicy
-      summary: deletes resource policy
-      description: deletes resource policy
+      operationId: deleteMachine
+      summary: Delete a machine.
+      description: Deletes a machine.
       tags:
-        - Resources
+        - Machines
       parameters:
-        - name: resourceId
+        - name: machineId
           required: true
           in: path
-          description: Resource id
-          schema:
-            type: string
-            format: uuid
-        - name: policyId
-          required: true
-          in: path
-          description: Policy id
+          description: machine id
           schema:
             type: string
             format: uuid
       responses:
         "204":
-          description: Empty response indicating successful removal
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/slots:
+    get:
+      operationId: listSlots
+      summary: Lists slots.
+      description: Lists slots.
+      tags:
+        - Slots
+      parameters:
+        - name: machineId
+          in: query
+          description: Machine ID
+          schema:
+            type: string
+            format: uuid
+            description: Machine ID
+        - name: itemId
+          in: query
+          description: Item ID
+          schema:
+            type: string
+            format: uuid
+            description: Item ID
+        - name: productId
+          in: query
+          description: Product ID
+          schema:
+            type: string
+            format: uuid
+            description: Product ID
+        - name: lineIdentifier
+          in: query
+          description: Line identifier
+          schema:
+            type: string
+            description: Line identifier
+        - name: barCode
+          in: query
+          description: Bar code
+          schema:
+            type: string
+            description: Bar code
+        - name: RFIDTag
+          in: query
+          description: RFID Tag
+          schema:
+            type: string
+            description: RFID Tag
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Slot"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of slots with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createSlot
+      summary: Create a slot.
+      description: Creates a new slot.
+      tags:
+        - Slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Slot"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created Slot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Slot"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/slots/{slotId}":
+    get:
+      operationId: findSlot
+      summary: Find a slot.
+      description: Finds a slot by id.
+      tags:
+        - Slots
+      parameters:
+        - name: slotId
+          required: true
+          in: path
+          description: Slot ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Slot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Slot"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateSlot
+      summary: Update a slot.
+      description: Updates a slot
+      tags:
+        - Slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Slot"
+        description: Payload
+        required: true
+      parameters:
+        - name: slotId
+          required: true
+          in: path
+          description: Slot ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated Slot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Slot"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteSlot
+      summary: Delete a slot.
+      description: Deletes a slot.
+      tags:
+        - Slots
+      parameters:
+        - name: slotId
+          required: true
+          in: path
+          description: Slot ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/items:
+    get:
+      operationId: listItems
+      summary: Lists items.
+      description: Lists items.
+      tags:
+        - Items
+      parameters:
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          schema:
+            type: string
+            format: uuid
+            description: Customer ID
+        - name: machineId
+          in: query
+          description: Filter by machine ID
+          schema:
+            type: string
+            format: uuid
+            description: Machine ID
+        - name: status
+          required: false
+          in: query
+          description: Item status
+          schema:
+            $ref: "#/components/schemas/ItemStatus"
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Item"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of items with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createItem
+      summary: Create an item.
+      description: Creates a new item.
+      tags:
+        - Items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created Item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/items/{itemId}":
+    get:
+      operationId: findItem
+      summary: Find an item.
+      description: Finds an item by id.
+      tags:
+        - Items
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          description: Item id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateItem
+      summary: Update an item.
+      description: Updates an item
+      tags:
+        - Items
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Item"
+        description: Payload
+        required: true
+      parameters:
+        - in: header
+          name: X-ModifierId-Override
+          description: modifier id override value
+          schema:
+            type: string
+            format: uuid
+        - name: itemId
+          required: true
+          in: path
+          description: item id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated Item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Item"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteItem
+      summary: Delete an item.
+      description: Deletes an item.
+      tags:
+        - Items
+      parameters:
+        - name: itemId
+          required: true
+          in: path
+          description: item id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/itemEvents:
+    get:
+      operationId: listItemEvents
+      summary: Lists item events.
+      description: Lists item events.
+      tags:
+        - ItemEvents
+      parameters:
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          schema:
+            type: string
+            format: uuid
+            description: Customer ID
+        - name: itemId
+          in: query
+          description: Filter by item ID
+          schema:
+            type: string
+            format: uuid
+            description: Item ID
+        - name: latestFirst
+          in: query
+          description: Filter by latest first
+          schema:
+            type: boolean
+        - name: startDate
+          in: query
+          description: From which date onwards the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Until which date the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: itemEventType
+          in: query
+          description: Filter by item event type
+          schema:
+            $ref: "#/components/schemas/ItemEventType"
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of item events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ItemEvent"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of item events with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createItemEvent
+      summary: Create an item event.
+      description: Creates a new item event.
+      tags:
+        - ItemEvents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemEvent"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created item event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/itemEvents/{itemEventId}":
+    get:
+      operationId: findItemEvent
+      summary: Find an item event.
+      description: Finds an item event by id.
+      tags:
+        - ItemEvents
+      parameters:
+        - name: itemEventId
+          required: true
+          in: path
+          description: Item event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found item event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateItemEvent
+      summary: Update an item event.
+      description: Updates an item event
+      tags:
+        - ItemEvents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ItemEvent"
+        description: Payload
+        required: true
+      parameters:
+        - name: itemEventId
+          required: true
+          in: path
+          description: Item event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated item event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ItemEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteItemEvent
+      summary: Delete an item event.
+      description: Deletes an item event.
+      tags:
+        - ItemEvents
+      parameters:
+        - name: itemEventId
+          required: true
+          in: path
+          description: Item event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/machineEvents:
+    get:
+      operationId: listMachineEvents
+      summary: Lists machine events.
+      description: Lists machine events.
+      tags:
+        - MachineEvents
+      parameters:
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          schema:
+            type: string
+            format: uuid
+            description: Customer ID
+        - name: machineId
+          in: query
+          description: Filter by machine ID
+          schema:
+            type: string
+            format: uuid
+        - name: latestFirst
+          in: query
+          description: Filter by latest first
+          schema:
+            type: boolean
+        - name: startDate
+          in: query
+          description: From which date onwards the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Until which date the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: machineEventType
+          in: query
+          description: Machine event type
+          schema:
+            $ref: "#/components/schemas/MachineEventType"
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of machine events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MachineEvent"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of machine events with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createMachineEvent
+      summary: Create a machine event.
+      description: Creates a new machine event.
+      tags:
+        - MachineEvents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineEvent"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created machine event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MachineEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/machineEvents/{machineEventId}":
+    get:
+      operationId: findMachineEvent
+      summary: Find a machine event.
+      description: Finds a machine event by id.
+      tags:
+        - MachineEvents
+      parameters:
+        - name: machineEventId
+          required: true
+          in: path
+          description: Machine event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found machine event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MachineEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateMachineEvent
+      summary: Update a machine event.
+      description: Updates a machine event
+      tags:
+        - MachineEvents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineEvent"
+        description: Payload
+        required: true
+      parameters:
+        - name: machineEventId
+          required: true
+          in: path
+          description: Machine event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated machine event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MachineEvent"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteMachineEvent
+      summary: Delete a machine event.
+      description: Deletes a machine event.
+      tags:
+        - MachineEvents
+      parameters:
+        - name: machineEventId
+          required: true
+          in: path
+          description: Machine event id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/alarms":
+    get:
+      operationId: listAlarms
+      summary: Lists alarms.
+      description: Lists alarms.
+      tags:
+        - Alarms
+      parameters:
+        - name: machineId
+          in: query
+          description: Filter by machine ID
+          schema:
+            type: string
+            format: uuid
+        - name: customerId
+          in: query
+          description: Filter by customer ID
+          schema:
+            type: string
+            format: uuid
+        - name: itemId
+          in: query
+          description: Filter by item ID
+          schema:
+            type: string
+            format: uuid
+        - name: latestFirst
+          in: query
+          description: Filter by latest first
+          schema:
+            type: boolean
+        - name: startDate
+          in: query
+          description: From which date onwards the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Until which date the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: alarmType
+          in: query
+          description: Alarm type
+          schema:
+            $ref: "#/components/schemas/AlarmType"
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+        - name: active
+          in: query
+          description: Filter by active status
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of alarms
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Alarm"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of alarms with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createAlarm
+      summary: Create a item alarm.
+      description: Creates a new item alarm.
+      tags:
+        - Alarms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alarm"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created item alarm
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alarm"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/alarms/{alarmId}":
+    get:
+      operationId: findAlarm
+      summary: Find an alarm.
+      description: Finds an alarm by id.
+      tags:
+        - Alarms
+      parameters:
+        - name: alarmId
+          required: true
+          in: path
+          description: Alarm id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found alarm
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alarm"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updateAlarm
+      summary: Updates an alarm.
+      description: Updates an alarm
+      tags:
+        - Alarms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Alarm"
+        description: Payload
+        required: true
+      parameters:
+        - name: alarmId
+          required: true
+          in: path
+          description: Alarm id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated alarm
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Alarm"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteAlarm
+      summary: Delete a item alarm.
+      description: Deletes a item alarm.
+      tags:
+        - Alarms
+      parameters:
+        - name: alarmId
+          required: true
+          in: path
+          description: Alarm id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/logEntries":
+    get:
+      operationId: listLogEntries
+      summary: Lists log entries.
+      description: Lists log entries. Log entries are derived from multiple different sources. Including machine events, item events and alarms.
+      tags:
+        - Logs
+      parameters:
+        - name: sourceType
+          in: query
+          description: Filter by source type
+          schema:
+            $ref: "#/components/schemas/LogEntrySourceType"
+        - name: latestFirst
+          in: query
+          description: Filter by latest first
+          schema:
+            type: boolean
+        - name: startDate
+          in: query
+          description: From which date onwards the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Until which date the search is made. Includes the given date
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of log entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LogEntry"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of alarms with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/pinCodes":
+    get:
+      operationId: listPinCodes
+      summary: Lists pin codes.
+      description: Lists pin codes.
+      tags:
+        - PinCodes
+      parameters:
+        - name: userId
+          in: query
+          description: Filter by user id
+          schema:
+            type: string
+            format: uuid
+        - name: machineId
+          in: query
+          description: Filter by machine id
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: Page number. Defaults to 0
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size. Defaults to 10
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of pin codes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PinCode"
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+                format: int64
+              description: Total count of alarms with given filters.
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createPinCode
+      summary: Create a pin code.
+      description: Creates a new pin code.
+      tags:
+        - PinCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PinCode"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Created pin code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PinCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/pinCodes/{pinCodeId}":
+    get:
+      operationId: findPinCode
+      summary: Find a pin code.
+      description: Finds a pin code by id.
+      tags:
+        - PinCodes
+      parameters:
+        - name: pinCodeId
+          required: true
+          in: path
+          description: Pin code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Found pin code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PinCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: updatePinCode
+      summary: Updates a pin code.
+      description: Updates a pin code
+      tags:
+        - PinCodes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PinCode"
+        description: Payload
+        required: true
+      parameters:
+        - name: pinCodeId
+          required: true
+          in: path
+          description: Pin code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Updated pin code
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PinCode"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deletePinCode
+      summary: Delete a pin code.
+      description: Deletes a pin code.
+      tags:
+        - PinCodes
+      parameters:
+        - name: pinCodeId
+          required: true
+          in: path
+          description: Pin code id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          description: Success
         "default":
           description: Invalid request was sent to the server
           content:
@@ -1100,142 +1568,15 @@ components:
         - code
         - message
       properties:
-        status:
+        code:
           type: integer
           format: int32
         message:
           type: string
 
-    GroupShortRepresentation:
+    Customer:
       type: object
-      description: Short group representation
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-        path:
-          type: string
-        subGroups:
-          type: array
-          items:
-            $ref: "#/components/schemas/GroupShortRepresentation"
-
-    GroupRepresentation:
-      type: object
-      description: Group representation
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-        path:
-          type: string
-        clientRoles:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        attributes:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        access:
-          type: object
-          additionalProperties:
-            type: boolean
-        realmRoles:
-          type: array
-          items:
-            type: string
-        subGroups:
-          type: array
-          items:
-            $ref: "#/components/schemas/GroupRepresentation"
-
-    UserRepresentation:
-      type: object
-      description: User representation
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        username:
-          type: string
-        serviceAccountClientId:
-          type: string
-        requiredActions:
-          type: array
-          items:
-            type: string
-        origin:
-          type: string
-        self:
-          type: string
-        notBefore:
-          type: integer
-          format: int32
-        lastName:
-          type: string
-        firstName:
-          type: string
-        groups:
-          type: array
-          items:
-            type: string
-        federationLink:
-          type: string
-        federatedIdentities:
-          type: array
-          items:
-            type: object
-        enabled:
-          type: boolean
-        emailVerified:
-          type: boolean
-        email:
-          type: string
-        disableableCredentialTypes:
-          type: array
-          items:
-            type: string
-        credentials:
-          type: array
-          items:
-            type: object
-        createdTimestamp:
-          type: integer
-          format: int64
-        clientRoles:
-          type: object
-        clientConsents:
-          type: array
-          items:
-            type: object
-        attributes:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        access:
-          type: object
-        realmRoles:
-          type: array
-          items:
-            type: string
-
-    ResourceRepresentation:
-      type: object
-      description: Resource representation
+      description: Customer object
       required:
         - name
       properties:
@@ -1243,46 +1584,539 @@ components:
           type: string
           format: uuid
           readOnly: true
+          description: Customer id in UUID format
+        groupId:
+          type: string
+          format: uuid
+          description: Customer default keycloak group ID
         name:
           type: string
-        scopes:
+          description: Customer name
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    Machine:
+      type: object
+      description: Machine object
+      required:
+        - name
+        - type
+        - machineCode
+        - customerId
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Machine id in UUID format
+        name:
+          type: string
+          description: Machine name
+        type:
+          $ref: "#/components/schemas/MachineType"
+        machineCode:
+          type: string
+          description: Machine code identifier
+          example: 0001, 1234
+        customerId:
+          type: string
+          format: uuid
+          description: Customer ID in UUID format
+        salesRepresentative:
+          type: string
+          description: Sales representative code
+          example: 880181
+        contactEmails:
           type: array
           items:
             type: string
+            format: email
+          description: List of machine contact emails
+        keycloakResourceId:
+          readOnly: true
+          type: string
+          format: uuid
+          description: Keycloak resource ID
+        streetAddress:
+          type: string
+          description: Machine street address
+        serialNumber:
+          type: string
+          description: Machine serial number
+        commissioningDate:
+          type: string
+          format: date-time
+          description: Machine commissioning date
+        readerType:
+          $ref: "#/components/schemas/ReaderType"
+        machineProperties:
+          type: object
+          additionalProperties:
+            type: string
+        borrowTime:
+          type: integer
+          format: int32
+          description: Borrow time for machine items in hours
+        isEnabled:
+          type: boolean
+          description: Is machine enabled or not
+        isOnline:
+          type: boolean
+          description: Is machine online or not
+        lastSeen:
+          type: string
+          format: date-time
+          description: Last seen date
+        metadata:
+          $ref: "#/components/schemas/Metadata"
 
-    CardCode:
+    MachineType:
+      type: string
+      description: Machine type enum
+      enum:
+        - ELOCK
+        - SMARTROOM
+        - ESCALE
+        - ECABINET
+        - BORROW_POINT
+
+    ReaderType:
+      type: string
+      description: Reader type enum
+      enum:
+        - ACCESS_7C
+        - ACCESS_7C_14CHAR
+        - ACCESS_7C_8BIT
+        - ACCESS_7C_DEC
+        - ACCESS_7AH
+        - SCHNEIDER_HID
+        - IR6090B
+        - IR6090B_14CHAR
+        - WAVEID
+        - HEDSAM
+        - INDALA_27BIT
+        - INDALA_27BIT_15CHAR
+        - STANLEY_26BIT
+        - INDALA_29BIT
+        - ROSSLARE_26BIT
+        - IDESCO_8CD_14CHAR
+        - IDESCO_8CD_15CHAR
+        - NEDAP_UPASS
+
+    Item:
       type: object
-      description: Card code object
+      description: Item object
       required:
-        - code
+        - name
+        - serialNumber
+        - customerId
+        - status
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
+          description: Item id in UUID format
+        name:
+          type: string
+          description: Item name
+        serialNumber:
+          type: string
+          description: Item serial number
+        barCode:
+          type: string
+          description: Barcode string.
+        RFIDTag:
+          type: string
+          description: RFID tag.
+        customerId:
+          type: string
+          format: uuid
+          description: Customer ID in UUID format
+        machineId:
+          type: string
+          format: uuid
+          description: Machine ID in UUID format
+        productId:
+          type: string
+          description: Product ID
+        status:
+          $ref: "#/components/schemas/ItemStatus"
+        statusDescription:
+          type: string
+          description: Status description which depends on status
+        replacedWith:
+          type: string
+          format: uuid
+          description: Replaced with item
+        maintenanceInterval:
+          type: integer
+          format: int32
+          description: Maintenance interval in days
+        etraProductCode:
+          type: string
+          description: ETRA's product code
+        customerProductCode:
+          type: string
+          description: Customers product code
+        productImage:
+          type: string
+          description: Product image
+        nextScheduledMaintenance:
+          type: string
+          format: date-time
+          description: When is the next scheduled maintenance due
+          readOnly: true
+        lastMaintenance:
+          type: string
+          format: date-time
+          description: When was the item previously maintained
+          readOnly: true
+        description:
+          type: string
+          description: Description of borrowable item
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    ItemStatus:
+      type: string
+      description: Item status enum
+      enum:
+        - AVAILABLE
+        - BORROWED
+        - BROKEN
+        - MAINTENANCE
+        - REMOVED
+
+    Metadata:
+      type: object
+      description: Metadata object
+      properties:
+        creatorId:
+          type: string
+          format: uuid
+          description: ID of creator
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date
+          readOnly: true
+        lastModifierId:
+          type: string
+          format: uuid
+          description: Id of last modifier
+          readOnly: true
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Date modified
+          readOnly: true
+
+    ItemEvent:
+      type: object
+      description: Item event object
+      required:
+        - itemId
+        - type
+        - data
+        - metadata
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Item id in UUID format
+        itemId:
+          type: string
+          format: uuid
+          description: Item ID
+        type:
+          $ref: "#/components/schemas/ItemEventType"
+        data:
+          type: object
+          description: Can be either BorrowEventData, ReturnEventData, RemoveEventData or RepairEventData
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    ItemEventType:
+      type: string
+      description: Item event type enum
+      enum:
+        - BORROW
+        - RETURN
+        - REMOVE
+        - REPAIR
+
+    BorrowEventData:
+      type: object
+      description: Borrow event data object
+      required:
+        - userId
+      properties:
         userId:
           type: string
           format: uuid
-          description: User keycloak ID
-          readOnly: true
-        code:
+          description: User ID
+
+    ReturnEventData:
+      type: object
+      description: Return event data object
+      required:
+        - userId
+        - machineId
+        - broken
+      properties:
+        userId:
           type: string
-          description: Card code
+          format: uuid
+          description: User ID
+        machineId:
+          type: string
+          format: uuid
+          description: Machine ID
+        broken:
+          type: boolean
+          description: Is item broken or not
         description:
           type: string
-          description: More detailed description of card code
+          description: More detailed description about return
 
-    Permission:
+    RemoveEventData:
       type: object
-      description: Permission object
+      description: Remove event data object
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: User ID
+        description:
+          type: string
+          description: More detailed description about remove
+
+    RepairEventData:
+      type: object
+      description: Repair event data object
+      required:
+        - userId
+        - machineId
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: User ID
+        machineId:
+          type: string
+          format: uuid
+          description: Machine ID
+        description:
+          type: string
+          description: More detailed description about repair
+
+    MachineEvent:
+      type: object
+      description: Machine event object
+      required:
+        - machineId
+        - type
+        - data
+        - metadata
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        name:
+          description: Machine event id in UUID format
+        machineId:
           type: string
-          description: Permission name
+          format: uuid
+          description: Machine ID
+        type:
+          $ref: "#/components/schemas/MachineEventType"
+        data:
+          type: object
+          description: Can be either OpenEventData or LoginAttemptEventData
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    MachineEventType:
+      type: string
+      description: Machine event type enum
+      enum:
+        - LOGIN_ATTEMPT
+        - OPEN
+
+    OpenEventData:
+      type: object
+      description: Open event data object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: User ID
+        line:
+          type: string
+          description: Opened line
+
+    LoginAttemptEventData:
+      type: object
+      description: Login attempt event data object
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: User ID
+        cardCode:
+          type: string
+          description: Card code
+        successful:
+          type: boolean
+          description: Was login successful or not
+
+    Slot:
+      type: object
+      description: Slot object
+      required:
+        - machineId
+        - monitorProductCount
+        - blocked
+        - metadata
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Slot id in UUID format
+        machineId:
+          type: string
+          format: uuid
+          description: Machine ID in UUID format
+        lineIdentifier:
+          type: string
+          description: Line identifier. Usually "0001". Either this or barCode or RFIDTag is mandatory.
+        monitorProductCount:
+          type: boolean
+          description: Should product count be monitored or not. If set to false product count should be null
+        blocked:
+          type: boolean
+          description: Is slot blocked or not
+        itemId:
+          type: string
+          format: uuid
+          description: Item ID in UUID format
+        productId:
+          type: string
+          format: uuid
+          description: Product ID in UUID format
+        productCount:
+          type: integer
+          format: int32
+          description: Count of available products within slot
+        barCode:
+          type: string
+          description: Barcode string. Either this or lineIdentifier or RFIDTag is mandatory.
+        RFIDTag:
+          type: string
+          description: RFID tag. Either this or lineIdentifier or barCode is mandatory.
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    Alarm:
+      type: object
+      description: Alarm object
+      required:
+        - customerId
+        - machineId
+        - type
+        - data
+        - active
+        - suppressed
+        - metadata
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Alarm id in UUID format
+        customerId:
+          type: string
+          format: uuid
+          description: Customer ID in UUID format
+        machineId:
+          type: string
+          format: uuid
+          description: Machine ID in UUID format
+        type:
+          $ref: "#/components/schemas/AlarmType"
+        data:
+          type: object
+          description: Can be either ItemReturnLateAlarmData, ItemBrokenAlarmData or ItemMaintenanceDueAlarmData
+        active:
+          type: boolean
+          description: Is alarm active or not
+        suppressed:
+          type: boolean
+          description: Is alarm suppressed or not
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    AlarmType:
+      type: string
+      description: Alarm type enum
+      enum:
+        - ITEMRETURNLATE
+        - ITEMBROKEN
+        - ITEMMAINTENANCEDUE
+
+    ItemReturnLateAlarmData:
+      type: object
+      description: Item return late alarm data object
+      required:
+        - itemId
+      properties:
+        itemId:
+          type: string
+          format: uuid
+          description: Item ID in UUID format
+        expectedReturnDate:
+          type: string
+          format: date-time
+          description: Expected return date
+        userId:
+          type: string
+          format: uuid
+          description: Borrower user ID in UUID format
+
+    ItemBrokenAlarmData:
+      type: object
+      description: Item broken alarm data object
+      required:
+        - itemId
+      properties:
+        itemId:
+          type: string
+          format: uuid
+          description: Item ID in UUID format
+        description:
+          type: string
+          description: Item fault description
+
+    ItemMaintenanceDueAlarmData:
+      type: object
+      description: Item maintenance due alarm data object
+      required:
+        - itemId
+      properties:
+        itemId:
+          type: string
+          format: uuid
+          description: Item ID in UUID format
+        maintenanceDueDate:
+          type: string
+          format: date-time
+          description: Maintenance due date
 
     CSVFile:
       type: object
@@ -1292,44 +2126,96 @@ components:
           type: string
       required:
         - content
-
-    Policy:
+        
+    LogEntry:
       type: object
+      description: |
+        Log entry is a derived entity that refers to one of following actual resources:
+        - MachineEvent
+        - ItemEvent
+        - Alarm
+      required:
+        - sourceId
+        - sourceType
+        - userId
+        - metadata
+      readOnly: true
+      properties:
+        sourceId:
+          type: string
+          format: uuid
+          description: Source ID in UUID format. Source ID refers to original event ID or alarm ID depending on the source type.
+          readOnly: true
+        sourceType:
+          $ref: "#/components/schemas/LogEntrySourceType"
+        machineId:
+          type: string
+          format: uuid
+          description: ID of machine if log event is related to machine event. Machine ID is available when source type is MACHINE_EVENT_LOGIN_ATTEMPT, MACHINE_EVENT_OPEN, ITEM_EVENT_RETURN or ITEM_EVENT_REPAIR.
+          readOnly: true
+        itemId:
+          type: string
+          format: uuid
+          description: ID of item if log event is related to item event. Item ID is available when source type is ITEM_EVENT_BORROW, ITEM_EVENT_RETURN, ITEM_EVENT_REMOVE, ITEM_EVENT_REPAIR, ALARM_ITEM_RETURN_LATE, ALARM_ITEM_RETURN_BORKEN or ALARM_ITEM_RETURN_MAINTENANCE_DUE.
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+          description: ID of user if available on the source. User ID is available in all source types.
+          readOnly: true
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+
+    LogEntrySourceType:
+      type: string
+      description: Log entry source type enum
+      enum:
+        - MACHINE_EVENT_LOGIN_ATTEMPT
+        - MACHINE_EVENT_OPEN
+        - ITEM_EVENT_BORROW
+        - ITEM_EVENT_RETURN
+        - ITEM_EVENT_REMOVE
+        - ITEM_EVENT_REPAIR
+        - ALARM_ITEM_RETURN_LATE
+        - ALARM_ITEM_RETURN_BROKEN
+        - ALARM_ITEM_RETURN_MAINTENANCE_DUE
+      readOnly: true
+
+    PinCode:
+      type: object
+      description: Pin code
+      required:
+        - pin
+        - machineId
       properties:
         id:
           type: string
           format: uuid
-        resourceId:
+          readOnly: true
+          description: Alarm id in UUID format
+        pin:
+          type: string
+          description: Pin code
+        machineId:
           type: string
           format: uuid
-          readOnly: true
+          description: Machine id in UUID format
+        userId:
+          type: string
+          format: uuid
+          description: User id in UUID format
+        slotId:
+          type: string
+          format: uuid
+          description: Slot id in UUID format
+        expires:
+          type: string
+          format: date-time
+          description: When pin code expires
         description:
           type: string
-        name:
-          type: string
-        permissionIds:
-          type: array
-          description: List of permission ids
-          items:
-            type: string
-            format: uuid
-        type:
-          $ref: "#/components/schemas/PolicyType"
-        userIds:
-          type: array
-          description: List of user Id's. Atleast one user id or group id has to be provided
-          items:
-            type: string
-            format: uuid
-        groupIds:
-          type: array
-          description: List of group Id's. Atleast one user id or group id has to be provided
-          items:
-            type: string
-            format: uuid
-
-    PolicyType:
-      type: string
-      enum:
-        - USER
-        - GROUP
+          description: Pin code description
+        singleUseOnly:
+          type: boolean
+        metadata:
+          $ref: "#/components/schemas/Metadata"
