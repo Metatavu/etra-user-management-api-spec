@@ -624,7 +624,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/users/{userId}/cardCodes:
+  /v1/cardCodes:
     get:
       operationId: listCardCodes
       summary: List card codes.
@@ -634,7 +634,7 @@ paths:
       parameters:
         - name: userId
           required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
@@ -676,7 +676,7 @@ paths:
       parameters:
         - name: userId
           required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
@@ -695,7 +695,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/users/{userId}/cardCodes/{cardCodeId}:
+  /v1/cardCodes/{cardCodeId}:
     get:
       operationId: findCardCode
       summary: Find a card code.
@@ -705,7 +705,7 @@ paths:
       parameters:
         - name: userId
           required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
@@ -746,7 +746,7 @@ paths:
       parameters:
         - name: userId
           required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
@@ -780,7 +780,7 @@ paths:
       parameters:
         - name: userId
           required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
