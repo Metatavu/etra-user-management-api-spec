@@ -633,7 +633,6 @@ paths:
         - CardCodes
       parameters:
         - name: userId
-          required: true
           in: query
           description: users id
           schema:
@@ -675,7 +674,6 @@ paths:
         required: true
       parameters:
         - name: userId
-          required: true
           in: query
           description: users id
           schema:
@@ -703,17 +701,16 @@ paths:
       tags:
         - CardCodes
       parameters:
-        - name: userId
-          required: true
-          in: query
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: users id
           schema:
             type: string
             format: uuid
@@ -744,17 +741,16 @@ paths:
         description: Payload
         required: true
       parameters:
-        - name: userId
-          required: true
-          in: query
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: users id
           schema:
             type: string
             format: uuid
@@ -778,17 +774,16 @@ paths:
       tags:
         - CardCodes
       parameters:
-        - name: userId
-          required: true
-          in: query
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: users id
           schema:
             type: string
             format: uuid
