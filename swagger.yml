@@ -675,6 +675,7 @@ paths:
       parameters:
         - name: userId
           in: query
+          required: true
           description: users id
           schema:
             type: string
@@ -710,6 +711,7 @@ paths:
             format: uuid
         - name: userId
           in: query
+          required: true
           description: users id
           schema:
             type: string
@@ -749,6 +751,7 @@ paths:
             type: string
             format: uuid
         - name: userId
+          required: true
           in: query
           description: users id
           schema:
@@ -782,6 +785,7 @@ paths:
             type: string
             format: uuid
         - name: userId
+          required: true
           in: query
           description: users id
           schema:
