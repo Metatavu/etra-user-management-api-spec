@@ -240,6 +240,16 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size
+          schema:
+            type: integer
       responses:
         "200":
           description: Group users
