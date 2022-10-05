@@ -255,22 +255,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    put:
-      operationId: updateGroupUsers
-      summary: Adds users to a group
-      description: Adds users to a group
+
+  "/v1/groups/{groupId}/users/add":
+    post:
+      operationId: addUsersToGroup
+      summary: Add users to group
+      description: Add users to group
       tags:
         - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
-        description: Payload
-        required: true
       parameters:
         - name: groupId
           required: true
@@ -281,7 +273,39 @@ paths:
             format: uuid
       responses:
         "200":
-          description: Group users
+          description: List of users to be added to a group
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{groupId}/users/remove":
+    post:
+      operationId: removeUsersToGroup
+      summary: Remove users to group
+      description: Remove users to group
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of users to be removed from a group
           content:
             application/json:
               schema:
