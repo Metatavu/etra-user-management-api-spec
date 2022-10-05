@@ -281,16 +281,19 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: List of users to be added to a group
+        required: true
       responses:
-        "200":
-          description: List of users to be added to a group
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  format: uuid
+        "201":
+          description: Successful addition to the group
         "default":
           description: Invalid request was sent to the server
           content:
@@ -300,9 +303,9 @@ paths:
 
   "/v1/groups/{groupId}/users/remove":
     post:
-      operationId: removeUsersToGroup
-      summary: Remove users to group
-      description: Remove users to group
+      operationId: removeUsersFromGroup
+      summary: Remove users from group
+      description: Remove users from group
       tags:
         - Groups
       parameters:
@@ -313,16 +316,19 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: List of users to be added to a group
+        required: true
       responses:
-        "200":
-          description: List of users to be removed from a group
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-                  format: uuid
+        "204":
+          description: Empty response indicating successful removal
         "default":
           description: Invalid request was sent to the server
           content:
