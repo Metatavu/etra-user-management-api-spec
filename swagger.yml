@@ -252,13 +252,14 @@ paths:
             type: integer
       responses:
         "200":
-          description: Group users
+          description: Group user IDs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserRepresentation"
+                  type: string
+                  format: uuid
         "default":
           description: Invalid request was sent to the server
           content:
