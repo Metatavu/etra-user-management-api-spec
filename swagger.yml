@@ -499,6 +499,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: includeGroupsAndRoles
+          in: query
+          description: Should user groups and roles be filled to user representation
+          schema:
+            type: boolean
       responses:
         "200":
           description: Example
