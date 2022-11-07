@@ -1305,6 +1305,7 @@ components:
       description: Card code object
       required:
         - code
+        - archived
       properties:
         id:
           type: string
