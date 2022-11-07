@@ -684,6 +684,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: includeArchived
+          in: query
+          description: if archived card codes should be included in the list too
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of card codes
@@ -1313,6 +1318,9 @@ components:
         code:
           type: string
           description: Card code
+        archived:
+          type: boolean
+          description: If the code was archived
         description:
           type: string
           description: More detailed description of card code
