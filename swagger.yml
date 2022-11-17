@@ -415,12 +415,11 @@ paths:
           description: Filter by email
           schema:
             type: string
-        - name: groupId
+        - name: groupName
           in: query
-          description: Filter by group
+          description: Filter by group name
           schema:
             type: string
-            format: uuid
         - name: page
           in: query
           description: Page number
