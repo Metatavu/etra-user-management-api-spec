@@ -371,7 +371,7 @@ paths:
       parameters:
         - name: search
           in: query
-          description: search string
+          description: search string for the text search of the following fields - username, first name, last name, card code, email address, group names
           schema:
             type: string
         - name: hasAccessToResource
@@ -395,6 +395,31 @@ paths:
           description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
           schema:
             type: boolean
+        - name: username
+          in: query
+          description: Filter by username
+          schema:
+            type: string
+        - name: fistName
+          in: query
+          description: Filter by fistName
+          schema:
+            type: string
+        - name: lastName
+          in: query
+          description: Filter by lastName
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Filter by email
+          schema:
+            type: string
+        - name: groupName
+          in: query
+          description: Filter by group name
+          schema:
+            type: string
         - name: page
           in: query
           description: Page number
