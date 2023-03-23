@@ -37,6 +37,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/permissions/refresh:
+    get:
+      operationId: refreshAccessPermissions
+      summary: refreshes permissions
+      description: refreshes permissions
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/groups:
     get:
       operationId: listGroups
