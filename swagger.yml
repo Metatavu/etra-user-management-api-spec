@@ -240,37 +240,40 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: page
+          in: query
+          description: Page number
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          description: Page size
+          schema:
+            type: integer
       responses:
         "200":
-          description: Group users
+          description: Group user IDs
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/UserRepresentation"
+                  type: string
+                  format: uuid
         "default":
           description: Invalid request was sent to the server
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    put:
-      operationId: updateGroupUsers
-      summary: Adds users to a group
-      description: Adds users to a group
+
+  "/v1/groups/{groupId}/users/add":
+    post:
+      operationId: addUsersToGroup
+      summary: Add users to group
+      description: Add users to group
       tags:
         - Groups
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-                format: uuid
-        description: Payload
-        required: true
       parameters:
         - name: groupId
           required: true
@@ -279,16 +282,54 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: List of users to be added to a group
+        required: true
       responses:
-        "200":
-          description: Group users
+        "201":
+          description: Successful addition to the group
+        "default":
+          description: Invalid request was sent to the server
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  format: uuid
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{groupId}/users/remove":
+    post:
+      operationId: removeUsersFromGroup
+      summary: Remove users from group
+      description: Remove users from group
+      tags:
+        - Groups
+      parameters:
+        - name: groupId
+          required: true
+          in: path
+          description: groups id
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+        description: List of users to be added to a group
+        required: true
+      responses:
+        "204":
+          description: Empty response indicating successful removal
         "default":
           description: Invalid request was sent to the server
           content:
@@ -330,7 +371,7 @@ paths:
       parameters:
         - name: search
           in: query
-          description: search string
+          description: search string for the text search of the following fields - username, first name, last name, card code, email address, group names
           schema:
             type: string
         - name: hasAccessToResource
@@ -354,6 +395,31 @@ paths:
           description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
           schema:
             type: boolean
+        - name: username
+          in: query
+          description: Filter by username
+          schema:
+            type: string
+        - name: fistName
+          in: query
+          description: Filter by fistName
+          schema:
+            type: string
+        - name: lastName
+          in: query
+          description: Filter by lastName
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Filter by email
+          schema:
+            type: string
+        - name: groupName
+          in: query
+          description: Filter by group name
+          schema:
+            type: string
         - name: page
           in: query
           description: Page number
@@ -364,6 +430,11 @@ paths:
           description: Page size
           schema:
             type: integer
+        - name: includeGroupsAndRoles
+          in: query
+          description: Return groups and roles
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of users
@@ -453,6 +524,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: includeGroupsAndRoles
+          in: query
+          description: Should user groups and roles be filled to user representation
+          schema:
+            type: boolean
       responses:
         "200":
           description: Example
@@ -619,7 +695,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/users/{userId}/cardCodes:
+  /v1/cardCodes:
     get:
       operationId: listCardCodes
       summary: List card codes.
@@ -628,12 +704,16 @@ paths:
         - CardCodes
       parameters:
         - name: userId
-          required: true
-          in: path
+          in: query
           description: users id
           schema:
             type: string
             format: uuid
+        - name: includeArchived
+          in: query
+          description: if archived card codes should be included in the list too
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of card codes
@@ -670,8 +750,8 @@ paths:
         required: true
       parameters:
         - name: userId
+          in: query
           required: true
-          in: path
           description: users id
           schema:
             type: string
@@ -690,7 +770,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/users/{userId}/cardCodes/{cardCodeId}:
+  /v1/cardCodes/{cardCodeId}:
     get:
       operationId: findCardCode
       summary: Find a card code.
@@ -698,17 +778,17 @@ paths:
       tags:
         - CardCodes
       parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          required: true
+          description: users id
           schema:
             type: string
             format: uuid
@@ -739,17 +819,17 @@ paths:
         description: Payload
         required: true
       parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          required: true
+          description: users id
           schema:
             type: string
             format: uuid
@@ -773,17 +853,17 @@ paths:
       tags:
         - CardCodes
       parameters:
-        - name: userId
-          required: true
-          in: path
-          description: users id
-          schema:
-            type: string
-            format: uuid
         - name: cardCodeId
           required: true
           in: path
           description: card code id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          required: true
+          description: users id
           schema:
             type: string
             format: uuid
@@ -1132,10 +1212,20 @@ components:
           type: string
         clientRoles:
           type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
         attributes:
           type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
         access:
           type: object
+          additionalProperties:
+            type: boolean
         realmRoles:
           type: array
           items:
@@ -1240,6 +1330,7 @@ components:
       description: Card code object
       required:
         - code
+        - archived
       properties:
         id:
           type: string
@@ -1253,6 +1344,9 @@ components:
         code:
           type: string
           description: Card code
+        archived:
+          type: boolean
+          description: If the code was archived
         description:
           type: string
           description: More detailed description of card code
