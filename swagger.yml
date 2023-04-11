@@ -52,6 +52,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/index/refresh:
+    get:
+      operationId: refreshElasticIndex
+      summary: refreshes elastic index
+      description: refreshes elastic index
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/groups:
     get:
       operationId: listGroups
