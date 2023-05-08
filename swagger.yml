@@ -415,6 +415,11 @@ paths:
           description: Filter by username
           schema:
             type: string
+        - name: usernamePrefix
+          in: query
+          description: Filter by username prefix
+          schema:
+            type: string
         - name: fistName
           in: query
           description: Filter by fistName
