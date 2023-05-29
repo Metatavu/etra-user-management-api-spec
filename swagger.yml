@@ -470,6 +470,12 @@ paths:
           description: Return groups and roles
           schema:
             type: boolean
+        - name: groupId
+          in: query
+          description: Filter by group ID
+          schema:
+            type: string
+            format: UUID
       responses:
         "200":
           description: List of users
