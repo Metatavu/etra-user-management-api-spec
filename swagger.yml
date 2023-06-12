@@ -37,6 +37,36 @@ paths:
               schema:
                 type: string
 
+  /v1/system/permissions/refresh:
+    get:
+      operationId: refreshAccessPermissions
+      summary: refreshes permissions
+      description: refreshes permissions
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /v1/system/index/refresh:
+    get:
+      operationId: refreshElasticIndex
+      summary: refreshes elastic index
+      description: refreshes elastic index
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/groups:
     get:
       operationId: listGroups
@@ -379,7 +409,7 @@ paths:
           description: Filter by access to given resource ID
           schema:
             type: string
-            format: UUID
+            format: uuid
         - name: hasAccessToResourceWithScope
           in: query
           description: Require users to have given scope to the resource defined in hasAccessToResource parameter
@@ -398,6 +428,11 @@ paths:
         - name: username
           in: query
           description: Filter by username
+          schema:
+            type: string
+        - name: usernamePrefix
+          in: query
+          description: Filter by username prefix
           schema:
             type: string
         - name: fistName
@@ -435,6 +470,12 @@ paths:
           description: Return groups and roles
           schema:
             type: boolean
+        - name: groupId
+          in: query
+          description: Filter by group ID
+          schema:
+            type: string
+            format: uuid
       responses:
         "200":
           description: List of users
