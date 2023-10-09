@@ -1579,5 +1579,19 @@ components:
           description: List of possible errors
           items:
             type: string
-        metadata:
-          $ref: "#/components/schemas/Metadata"
+        creatorId:
+          type: string
+          format: uuid
+          description: ID of creator
+        createdAt:
+          type: string
+          format: date-time
+          description: Created date
+        lastModifierId:
+          type: string
+          format: uuid
+          description: Id of last modifier
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Date modified
