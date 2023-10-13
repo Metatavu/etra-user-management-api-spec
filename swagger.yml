@@ -1482,11 +1482,13 @@ components:
     CSVFile:
       type: object
       description: Csv file
+      required:
+        - content
       properties:
         content:
           type: string
-      required:
-        - content
+        name:
+          type: string
 
     Policy:
       type: object
