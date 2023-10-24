@@ -50,15 +50,25 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: usersFrom
+          in: query
+          description: Process users from index
+          schema:
+            type: integer
+        - name: usersMax
+          in: query
+          description: Max number of users to process
+          schema:
+            type: integer
       tags:
         - System
       responses:
         "200":
-          description: OK when done
+          description: Number of users processed
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: "#/components/schemas/ResourcePermissionRefreshResponse"
 
   /v1/system/permissions/refresh:
     get:
@@ -1554,6 +1564,12 @@ components:
         - USER
         - GROUP
 
+    ResourcePermissionRefreshResponse:
+      type: object
+      description: resource permissions refresh response
+      properties:
+        userProcessed:
+          type: integer
 
     BatchType:
       type: string
