@@ -37,6 +37,29 @@ paths:
               schema:
                 type: string
 
+  /v1/system/resources/{resourceId}/permissions/refresh:
+    get:
+      operationId: refreshResourceAccessPermissions
+      summary: refreshes permissions for resource
+      description: refreshes permissions for resource
+      parameters:
+        - name: resourceId
+          required: true
+          in: path
+          description: resource id
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/system/permissions/refresh:
     get:
       operationId: refreshAccessPermissions
