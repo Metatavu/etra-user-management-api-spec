@@ -50,16 +50,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: usersFrom
-          in: query
-          description: Process users from index
-          schema:
-            type: integer
-        - name: usersMax
-          in: query
-          description: Max number of users to process
-          schema:
-            type: integer
       tags:
         - System
       responses:
