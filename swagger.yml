@@ -50,16 +50,6 @@ paths:
           schema:
             type: string
             format: uuid
-        - name: usersFrom
-          in: query
-          description: Process users from index
-          schema:
-            type: integer
-        - name: usersMax
-          in: query
-          description: Max number of users to process
-          schema:
-            type: integer
       tags:
         - System
       responses:
@@ -69,6 +59,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ResourcePermissionRefreshResponse"
+
+  /v1/system/resourceAccessTasks/count:
+    get:
+      operationId: countResourceAccessTasks
+      summary: counts resource access tasks by given filters
+      description: counts resource access tasks by given filters
+      parameters:
+        - name: resourceId
+          in: query
+          description: Count by resource id
+          schema:
+            type: string
+            format: uuid
+        - name: userId
+          in: query
+          description: Count by user id
+          schema:
+            type: string
+            format: uuid
+      tags:
+        - System
+      responses:
+        "200":
+          description: Number of active tasks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResourceAccessCountResponse"
 
   /v1/system/permissions/refresh:
     get:
@@ -1569,6 +1587,13 @@ components:
       description: resource permissions refresh response
       properties:
         userProcessed:
+          type: integer
+
+    ResourceAccessCountResponse:
+      type: object
+      description: Resource access task count
+      properties:
+        activeTasks:
           type: integer
 
     BatchType:
