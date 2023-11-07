@@ -128,9 +128,29 @@ paths:
       parameters:
         - name: search
           in: query
-          description: search string
+          description: Free text search
           schema:
             type: string
+        - name: groupName
+          in: query
+          description: name to search groups with
+          schema:
+            type: string
+        - name: attributeName
+          in: query
+          description: attribute name to search groups with
+          schema:
+            type: string
+        - name: attributeValue
+          in: query
+          description: attribute value to search groups with
+          schema:
+            type: string
+        - name: searchAllGroups
+          in: query
+          description: if enabled search will be performed from all groups not just top level cloud groups
+          schema:
+            type: boolean
         - name: first
           in: query
           description: First result.
