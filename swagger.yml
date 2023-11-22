@@ -1347,6 +1347,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/validate":
+    post:
+      operationId: validateField
+      summary: Validates a field
+      description: Validates a field
+      tags:
+        - Validation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidationRequest"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResult"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1681,3 +1709,43 @@ components:
           type: string
           format: date-time
           description: Date modified
+
+    ValidationRequest:
+      type: object
+      required:
+        - field
+        - value
+      properties:
+        field:
+          $ref: "#/components/schemas/ValidationField"
+        value:
+          type: string
+          description: Value to be validated. For now this should be string value.
+
+    ValidationField:
+      type: string
+      description: Validation field enum
+      enum:
+        - USERNAME
+        - USER_EMAIL
+        - CARD_CODE
+
+    ValidationResult:
+      type: object
+      description: Validation result
+      required:
+        - valid
+      properties:
+        valid:
+          type: boolean
+          description: Was validation was successful
+        validationErrorType:
+          $ref: "#/components/schemas/ValidationErrorType"
+
+    ValidationErrorType:
+      type: string
+      description: Validation error type enum
+      enum:
+        - USERNAME_ALREADY_EXISTS
+        - USER_EMAIL_ALREADY_EXISTS
+        - CARD_CODE_ALREADY_EXISTS
