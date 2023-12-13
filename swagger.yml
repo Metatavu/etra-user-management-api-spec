@@ -713,6 +713,38 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/users/{userId}/resourceAccess/{resourceId}/scopes":
+    get:
+      operationId: getUserResourceAccessScopes
+      summary: Gets user resource access scopes
+      description: Gets user resource access for given resource scopes directly from Keycloak.
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+        - name: resourceId
+          required: true
+          in: path
+          description: resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User resource access scopes for given resource
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
   "/v1/users/{userId}/groups":
     get:
       operationId: listUserGroups
