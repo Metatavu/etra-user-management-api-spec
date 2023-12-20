@@ -103,9 +103,24 @@ paths:
               schema:
                 type: string
 
-  /v1/system/index/refresh:
+  /v1/system/index/refreshUsersIndex:
     get:
-      operationId: refreshElasticIndex
+      operationId: refreshUsersIndex
+      summary: refreshes user index
+      description: refreshes user index
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /v1/system/index/refreshGroupsIndex:
+    get:
+      operationId: refreshGroupsIndex
       summary: refreshes elastic index
       description: refreshes elastic index
       tags:
@@ -128,9 +143,29 @@ paths:
       parameters:
         - name: search
           in: query
-          description: search string
+          description: Free text search
           schema:
             type: string
+        - name: groupName
+          in: query
+          description: name to search groups with
+          schema:
+            type: string
+        - name: attributeName
+          in: query
+          description: attribute name to search groups with
+          schema:
+            type: string
+        - name: attributeValue
+          in: query
+          description: attribute value to search groups with
+          schema:
+            type: string
+        - name: searchAllGroups
+          in: query
+          description: if enabled search will be performed from all groups not just top level cloud groups
+          schema:
+            type: boolean
         - name: first
           in: query
           description: First result.
@@ -692,6 +727,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  "/v1/users/{userId}/resourceAccess/{resourceId}/scopes":
+    get:
+      operationId: getUserResourceAccessScopes
+      summary: Gets user resource access scopes
+      description: Gets user resource access for given resource scopes directly from Keycloak.
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+        - name: resourceId
+          required: true
+          in: path
+          description: resource id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User resource access scopes for given resource
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
 
   "/v1/users/{userId}/groups":
     get:
@@ -1327,6 +1394,34 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/validate":
+    post:
+      operationId: validateField
+      summary: Validates a field
+      description: Validates a field
+      tags:
+        - Validation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ValidationRequest"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationResult"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1661,3 +1756,43 @@ components:
           type: string
           format: date-time
           description: Date modified
+
+    ValidationRequest:
+      type: object
+      required:
+        - field
+        - value
+      properties:
+        field:
+          $ref: "#/components/schemas/ValidationField"
+        value:
+          type: string
+          description: Value to be validated. For now this should be string value.
+
+    ValidationField:
+      type: string
+      description: Validation field enum
+      enum:
+        - USERNAME
+        - USER_EMAIL
+        - CARD_CODE
+
+    ValidationResult:
+      type: object
+      description: Validation result
+      required:
+        - valid
+      properties:
+        valid:
+          type: boolean
+          description: Was validation was successful
+        validationErrorType:
+          $ref: "#/components/schemas/ValidationErrorType"
+
+    ValidationErrorType:
+      type: string
+      description: Validation error type enum
+      enum:
+        - USERNAME_ALREADY_EXISTS
+        - USER_EMAIL_ALREADY_EXISTS
+        - CARD_CODE_ALREADY_EXISTS
