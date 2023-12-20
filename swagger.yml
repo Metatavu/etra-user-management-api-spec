@@ -103,9 +103,24 @@ paths:
               schema:
                 type: string
 
-  /v1/system/index/refresh:
+  /v1/system/index/refreshUsersIndex:
     get:
-      operationId: refreshElasticIndex
+      operationId: refreshUsersIndex
+      summary: refreshes user index
+      description: refreshes user index
+      tags:
+        - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /v1/system/index/refreshGroupsIndex:
+    get:
+      operationId: refreshGroupsIndex
       summary: refreshes elastic index
       description: refreshes elastic index
       tags:
