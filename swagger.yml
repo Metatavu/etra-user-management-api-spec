@@ -745,13 +745,13 @@ paths:
             format: uuid
       responses:
         "200":
-          description: User resource access scopes for given resource
+          description: List of user resource access
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: "#/components/schemas/UserResourceAccess"
 
   "/v1/users/{userId}/resourceAccess/{resourceId}/scopes":
     get:
@@ -1611,6 +1611,25 @@ components:
           type: array
           items:
             type: string
+
+    UserResourceAccess:
+      type: object
+      description: Resource representation
+      required:
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+        resourceId:
+          type: string
+          format: uuid
+        scope:
+          type: string
 
     CardCode:
       type: object
