@@ -728,6 +728,31 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  "/v1/users/{userId}/resourceAccess":
+    get:
+      operationId: getUserResourceAccess
+      summary: Gets user resource access
+      description: Gets user resource access
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: User resource access scopes for given resource
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
   "/v1/users/{userId}/resourceAccess/{resourceId}/scopes":
     get:
       operationId: getUserResourceAccessScopes
