@@ -1615,8 +1615,6 @@ components:
     UserResourceAccess:
       type: object
       description: Resource representation
-      required:
-        - name
       properties:
         id:
           type: string
