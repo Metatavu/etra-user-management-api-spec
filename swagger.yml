@@ -562,6 +562,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: groupPathPrefix
+          in: query
+          description: Filter by group path prefix
+          schema:
+            type: string
       responses:
         "200":
           description: List of users
@@ -1591,6 +1596,10 @@ components:
         access:
           type: object
         realmRoles:
+          type: array
+          items:
+            type: string
+        groupPaths:
           type: array
           items:
             type: string
