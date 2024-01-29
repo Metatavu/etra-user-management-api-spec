@@ -562,6 +562,11 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: groupPathPrefix
+          in: query
+          description: Filter by group path prefix
+          schema:
+            type: string
       responses:
         "200":
           description: List of users
@@ -727,6 +732,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
+  "/v1/users/{userId}/resourceAccess":
+    get:
+      operationId: getUserResourceAccess
+      summary: Gets user resource access
+      description: Gets user resource access
+      tags:
+        - Users
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          description: user id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: List of user resource access objects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserResourceAccess"
 
   "/v1/users/{userId}/resourceAccess/{resourceId}/scopes":
     get:
@@ -1569,6 +1599,10 @@ components:
           type: array
           items:
             type: string
+        groupPaths:
+          type: array
+          items:
+            type: string
 
     ResourceRepresentation:
       type: object
@@ -1586,6 +1620,23 @@ components:
           type: array
           items:
             type: string
+
+    UserResourceAccess:
+      type: object
+      description: Resource representation
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        userId:
+          type: string
+          format: uuid
+        resourceId:
+          type: string
+          format: uuid
+        scope:
+          type: string
 
     CardCode:
       type: object
