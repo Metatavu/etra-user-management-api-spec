@@ -1601,8 +1601,26 @@ components:
             type: string
         groupPaths:
           type: array
+          readOnly: true
           items:
             type: string
+        resourceAccesses:
+          readOnly: true
+          type: array
+          items:
+            $ref: "#/components/schemas/ResourceAccessItem"
+
+    ResourceAccessItem:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          format: uuid
+          readOnly: true
+        scope:
+          type: string
+          description: Scope name
+          readOnly: true
 
     ResourceRepresentation:
       type: object
