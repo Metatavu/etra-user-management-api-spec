@@ -460,6 +460,12 @@ paths:
       description: Create users from a csv-file.
       tags:
         - Users
+      parameters:
+        - name: targetEmail
+          in: query
+          description: Target email address for notification message when user creation completes.
+          schema:
+            type: string
       requestBody:
         description: Csv file with users
         required: true
