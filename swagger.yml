@@ -466,6 +466,11 @@ paths:
           description: Target email address for notification message when user creation completes.
           schema:
             type: string
+        - name: batchPriority
+          in: query
+          description: Priority for user update task batch. Higher priority batches will be prioritized in the queue.
+          schema:
+            type: integer
       requestBody:
         description: Csv file with users
         required: true
