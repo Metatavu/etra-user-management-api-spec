@@ -1,3 +1,4 @@
+
 openapi: 3.0.3
 info:
   version: 1.0.0
@@ -1812,6 +1813,9 @@ components:
         successfulEntries:
           type: integer
           description: Number of successful entries in the batch
+        batchPriority:
+          type: integer
+          description: Priority of batch, higher number means higher priority
         failedEntries:
           type: integer
           description: Number of failed entries in the batch
