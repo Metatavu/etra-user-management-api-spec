@@ -37,6 +37,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/indexTasks/count:
+    get:
+      operationId: getIndexTaskCount
+      summary: Replies with index task count
+      description: Replies with index task count
+      tags:
+        - System
+      responses:
+        "200":
+          description: Index task count
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/system/resources/{resourceId}/permissions/refresh:
     get:
       operationId: refreshResourceAccessPermissions
