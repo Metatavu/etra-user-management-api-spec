@@ -1702,6 +1702,14 @@ components:
         description:
           type: string
           description: More detailed description of card code
+        createdAt:
+          type: string
+          format: date-time
+          description: Created at date
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Modified at date
 
     Permission:
       type: object
