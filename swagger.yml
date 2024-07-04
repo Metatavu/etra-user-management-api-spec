@@ -682,6 +682,11 @@ paths:
           description: Should user groups and roles be filled to user representation
           schema:
             type: boolean
+        - name: refresh
+          in: query
+          description: Refresh user in index from keycloak before replying
+          schema:
+            type: boolean
       responses:
         "200":
           description: Example
