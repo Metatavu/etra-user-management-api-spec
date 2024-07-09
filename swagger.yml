@@ -148,6 +148,28 @@ paths:
               schema:
                 type: string
 
+  /v1/system/webhook/keycloak:
+    post:
+      operationId: handleKeycloakWebhook
+      summary: Handles incoming webhook from etra cloud listener keycloak plugin
+      description: Handles incoming webhook from etra cloud listener keycloak plugin
+      tags:
+        - System
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeycloakWebhook"
+        description: Payload
+        required: true
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/groups:
     get:
       operationId: listGroups
@@ -1737,6 +1759,21 @@ components:
         content:
           type: string
         name:
+          type: string
+
+    KeycloakWebhook:
+      type: object
+      description: Webhook from etra cloud listener keycloak plugin
+      properties:
+        resourceType:
+          type: string
+        operationType:
+          type: string
+        userId:
+          type: string
+        groupId:
+          type: string
+        creatorId:
           type: string
 
     Policy:
