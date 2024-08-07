@@ -37,6 +37,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/indexTasks/count:
+    get:
+      operationId: getIndexTaskCount
+      summary: Replies with index task count
+      description: Replies with index task count
+      tags:
+        - System
+      responses:
+        "200":
+          description: Index task count
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/system/resources/{resourceId}/permissions/refresh:
     get:
       operationId: refreshResourceAccessPermissions
@@ -125,6 +140,28 @@ paths:
       description: refreshes elastic index
       tags:
         - System
+      responses:
+        "200":
+          description: OK when done
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  /v1/system/webhook/keycloak:
+    post:
+      operationId: handleKeycloakWebhook
+      summary: Handles incoming webhook from etra cloud listener keycloak plugin
+      description: Handles incoming webhook from etra cloud listener keycloak plugin
+      tags:
+        - System
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KeycloakWebhook"
+        description: Payload
+        required: true
       responses:
         "200":
           description: OK when done
@@ -665,6 +702,11 @@ paths:
         - name: includeGroupsAndRoles
           in: query
           description: Should user groups and roles be filled to user representation
+          schema:
+            type: boolean
+        - name: refresh
+          in: query
+          description: Refresh user in index from keycloak before replying
           schema:
             type: boolean
       responses:
@@ -1687,6 +1729,14 @@ components:
         description:
           type: string
           description: More detailed description of card code
+        createdAt:
+          type: string
+          format: date-time
+          description: Created at date
+        modifiedAt:
+          type: string
+          format: date-time
+          description: Modified at date
 
     Permission:
       type: object
@@ -1709,6 +1759,21 @@ components:
         content:
           type: string
         name:
+          type: string
+
+    KeycloakWebhook:
+      type: object
+      description: Webhook from etra cloud listener keycloak plugin
+      properties:
+        resourceType:
+          type: string
+        operationType:
+          type: string
+        userId:
+          type: string
+        groupId:
+          type: string
+        creatorId:
           type: string
 
     Policy:
