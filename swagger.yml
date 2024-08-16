@@ -549,6 +549,11 @@ paths:
           description: Filter by user identifier
           schema:
             type: string
+        - name: includeArchivedIdentifiers
+          in: query
+          description: Include archived identifiers
+          schema:
+            type: boolean
         - name: enabled
           in: query
           description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
