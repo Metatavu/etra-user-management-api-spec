@@ -489,6 +489,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
+  "/v1/groups/{parentGroupId}/upload":
+    post:
+      operationId: createGroupsFromCsv
+      summary: Create groups from a csv-file.
+      description: Creates groups from a csv-file as children for the specified parent group.
+      tags:
+        - Groups
+      parameters:
+        - name: parentGroupId
+          required: true
+          in: path
+          description: Parent group for groups to be created
+          schema:
+            type: string
+            format: uuid
+        - name: targetEmail
+          in: query
+          description: Target email address for notification message when group creation completes.
+          schema:
+            type: string
+      requestBody:
+        description: Csv file with groups
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CSVFile"
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /v1/users/upload:
     post:
@@ -1845,6 +1882,7 @@ components:
       description: Task type enum
       enum:
         - USERS
+        - GROUPS
 
     BatchStatus:
       type: string
