@@ -489,6 +489,43 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+                
+  "/v1/groups/{parentGroupId}/upload":
+    post:
+      operationId: createGroupsFromCsv
+      summary: Create groups from a csv-file.
+      description: Creates groups from a csv-file as children for the specified parent group.
+      tags:
+        - Groups
+      parameters:
+        - name: parentGroupId
+          required: true
+          in: path
+          description: Parent group for groups to be created
+          schema:
+            type: string
+            format: uuid
+        - name: targetEmail
+          in: query
+          description: Target email address for notification message when group creation completes.
+          schema:
+            type: string
+      requestBody:
+        description: Csv file with groups
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CSVFile"
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
   /v1/users/upload:
     post:
@@ -549,6 +586,11 @@ paths:
           description: Filter by user identifier
           schema:
             type: string
+        - name: includeArchivedIdentifiers
+          in: query
+          description: Include archived identifiers
+          schema:
+            type: boolean
         - name: enabled
           in: query
           description: List realm user filter, default to false. X-Total-Count header includes both enabled and disabled users, no matter if the enabled filter is set or not(incompatible).
@@ -1550,13 +1592,26 @@ components:
           type: string
         path:
           type: string
-        clientRoles:
+        parentId:
+          type: string
+        subGroupCount:
+          format: int64
+          type: integer
+        subGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupRepresentation'
+        attributes:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
-        attributes:
+        realmRoles:
+          type: array
+          items:
+            type: string
+        clientRoles:
           type: object
           additionalProperties:
             type: array
@@ -1566,14 +1621,6 @@ components:
           type: object
           additionalProperties:
             type: boolean
-        realmRoles:
-          type: array
-          items:
-            type: string
-        subGroups:
-          type: array
-          items:
-            $ref: "#/components/schemas/GroupRepresentation"
 
     UserRepresentation:
       type: object
@@ -1582,71 +1629,70 @@ components:
         id:
           type: string
           format: uuid
-          readOnly: true
         username:
-          type: string
-        serviceAccountClientId:
-          type: string
-        requiredActions:
-          type: array
-          items:
-            type: string
-        origin:
-          type: string
-        self:
-          type: string
-        notBefore:
-          type: integer
-          format: int32
-        lastName:
           type: string
         firstName:
           type: string
-        groups:
-          type: array
-          items:
-            type: string
-        federationLink:
+        lastName:
           type: string
-        federatedIdentities:
-          type: array
-          items:
-            type: object
-        enabled:
-          type: boolean
-        emailVerified:
-          type: boolean
         email:
           type: string
-        disableableCredentialTypes:
-          type: array
-          items:
-            type: string
-        credentials:
-          type: array
-          items:
-            type: object
-        createdTimestamp:
-          type: integer
-          format: int64
-        clientRoles:
-          type: object
-        clientConsents:
-          type: array
-          items:
-            type: object
+        emailVerified:
+          type: boolean
         attributes:
           type: object
           additionalProperties:
             type: array
             items:
               type: string
-        access:
-          type: object
+        self:
+          type: string
+        origin:
+          type: string
+        createdTimestamp:
+          format: int64
+          type: integer
+        enabled:
+          type: boolean
+        totp:
+          type: boolean
+        federationLink:
+          type: string
+        serviceAccountClientId:
+          type: string
+        disableableCredentialTypes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        requiredActions:
+          type: array
+          items:
+            type: string
         realmRoles:
           type: array
           items:
             type: string
+        clientRoles:
+          type: object
+        notBefore:
+          format: int32
+          type: integer
+        applicationRoles:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          deprecated: true
+        groups:
+          type: array
+          items:
+            type: string
+        access:
+          type: object
+          additionalProperties:
+            type: boolean
         groupPaths:
           type: array
           readOnly: true
@@ -1836,6 +1882,7 @@ components:
       description: Task type enum
       enum:
         - USERS
+        - GROUPS
 
     BatchStatus:
       type: string
