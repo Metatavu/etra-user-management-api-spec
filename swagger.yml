@@ -652,6 +652,11 @@ paths:
           description: Filter by group path prefix
           schema:
             type: string
+        - name: includeCardCodes
+          in: query
+          description: Include card codes
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of users
@@ -1696,6 +1701,11 @@ components:
         groupPaths:
           type: array
           readOnly: true
+          items:
+            type: string
+        cardCodes:
+          type: array
+          description: List of card codes (Optional)
           items:
             type: string
         resourceAccesses:
