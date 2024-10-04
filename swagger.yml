@@ -1938,7 +1938,7 @@ components:
       enum:
         - USERS
         - GROUPS
-        - RESOURCES
+        - RESOURCE_ACCESS
 
     BatchStatus:
       type: string
