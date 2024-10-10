@@ -1216,15 +1216,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  /v1/resources/upload:
+  /v1/resourceAccesses/upload:
     post:
-      operationId: createResourcesFromCsv
-      summary: Create resources from a csv-file.
-      description: Create resources from a csv-file.
+      operationId: createResourcesAccessesFromCsv
+      summary: Create resource accesses from a csv-file.
+      description: Create resource accesses from a csv-file.
       tags:
         - Resources
       requestBody:
-        description: Csv file with resources
+        description: Csv file with resource accesses
         required: true
         content:
           application/json:
@@ -1938,7 +1938,7 @@ components:
       enum:
         - USERS
         - GROUPS
-        - RESOURCES
+        - RESOURCE_ACCESS
 
     BatchStatus:
       type: string
