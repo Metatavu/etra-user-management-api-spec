@@ -657,6 +657,11 @@ paths:
           description: Include card codes
           schema:
             type: boolean
+        - name: hasActiveCardCode
+          in: query
+          description: Filter by users that have active cardcode
+          schema:
+              type: boolean
       responses:
         "200":
           description: List of users
