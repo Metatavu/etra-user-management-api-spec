@@ -443,7 +443,7 @@ paths:
               items:
                 type: string
                 format: uuid
-        description: List of users to be added to a group
+        description: List of user IDs to be added to a group
         required: true
       responses:
         "201":
@@ -478,7 +478,7 @@ paths:
               items:
                 type: string
                 format: uuid
-        description: List of users to be added to a group
+        description: List of user IDs to be removed from the group
         required: true
       responses:
         "204":
@@ -489,7 +489,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-                
+
   "/v1/groups/{parentGroupId}/upload":
     post:
       operationId: createGroupsFromCsv
@@ -517,6 +517,71 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CSVFile"
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{targetGroupId}/users/addFromGroup":
+    post:
+      operationId: addGroupUsersToGroup
+      summary: Add users from another group
+      description: Adds all users from the source group to the target group.
+      tags:
+        - Groups
+      parameters:
+        - name: targetGroupId
+          in: path
+          required: true
+          description: Target group id
+          schema:
+            type: string
+            format: uuid
+        - name: sourceGroupId
+          in: query
+          required: true
+          description: Source group id whose users will be added
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "201":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{targetGroupId}/users/moveFromGroup":
+    post:
+      operationId: moveGroupUsersToGroup
+      summary: Move users from other group(s)
+      description: >
+        Dispatch an event to add users from the source group to the target group and remove those users from the source group. Processing is asynchronous.
+      tags:
+        - Groups
+      parameters:
+        - name: targetGroupId
+          in: path
+          required: true
+          description: Target group id
+          schema:
+            type: string
+            format: uuid
+        - name: sourceGroupId
+          in: query
+          required: true
+          description: Source group id whose users will be moved
+          schema:
+            type: string
+            format: uuid
       responses:
         "201":
           description: Successful request
@@ -661,7 +726,7 @@ paths:
           in: query
           description: Filter by users that have active cardcode
           schema:
-              type: boolean
+            type: boolean
       responses:
         "200":
           description: List of users
