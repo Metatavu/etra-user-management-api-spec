@@ -255,6 +255,41 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/groups/find:
+    post:
+      operationId: findGroups
+      summary: Find multiple groups by IDs.
+      description: Returns a list of groups for the given array of group IDs.
+      tags:
+        - Groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                groupIds:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+      responses:
+        "200":
+          description: List of found groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GroupRepresentation"
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   "/v1/groups/{groupId}":
     get:
       operationId: findGroup
@@ -272,7 +307,7 @@ paths:
             format: uuid
       responses:
         "200":
-          description: Example
+          description: Found group
           content:
             application/json:
               schema:
