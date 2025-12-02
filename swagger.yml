@@ -1084,6 +1084,58 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/users/roles:
+    get:
+      operationId: listUserRoles
+      summary: List user roles.
+      description: Lists user roles. Optional domain filter.
+      tags:
+        - Users
+      parameters:
+        - name: domain
+          in: query
+          description: domain
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of Permissions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/roleDomains:
+    get:
+      operationId: listUserRoleDomains
+      summary: List user role domains.
+      description: Lists user role domains.
+      tags:
+        - Users
+      responses:
+        "200":
+          description: List of role domains
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /v1/cardCodes:
     get:
       operationId: listCardCodes
