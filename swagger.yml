@@ -672,13 +672,12 @@ paths:
             type: string
         - name: hasAccessToResource
           in: query
-          description: Filter by access to given resource ID
+          description: Comma separated list of resource IDs. Return users that have access to one or more of the given resources.
           schema:
             type: string
-            format: uuid
         - name: hasAccessToResourceWithScope
           in: query
-          description: Require users to have given scope to the resource defined in hasAccessToResource parameter
+          description: Require users to have given scope to the resources defined in hasAccessToResource parameter
           schema:
             type: string
         - name: userIdentifier
@@ -1748,42 +1747,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-  "/v1/userResourceAccesses":
-    post:
-      operationId: listUserResourceAccesses
-      tags:
-        - Resources
-      requestBody:
-        description: List of user IDs and resource IDs
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - resourceIds
-              properties:
-                resourceIds:
-                  type: array
-                  items:
-                    type: string
-                    format: uuid
-      responses:
-        "200":
-          description: List of user resource accesses
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/UserResourceAccessesResponseItem"
-        "default":
-          description: Invalid request was sent to the server
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
 components:
   securitySchemes:
     bearerAuth:
@@ -2232,17 +2195,3 @@ components:
         - USERNAME_ALREADY_EXISTS
         - USER_EMAIL_ALREADY_EXISTS
         - CARD_CODE_ALREADY_EXISTS
-
-    UserResourceAccessesResponseItem:
-      type: object
-      description: User resource access
-      required:
-        - userRepresentation
-        - resourceAccessItem
-      properties:
-        userRepresentation:
-          $ref: "#/components/schemas/UserRepresentation"
-        resourceAccessItem:
-          type: array
-          items:
-            $ref: "#/components/schemas/ResourceAccessItem"
