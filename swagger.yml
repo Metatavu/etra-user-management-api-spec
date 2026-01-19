@@ -672,13 +672,12 @@ paths:
             type: string
         - name: hasAccessToResource
           in: query
-          description: Filter by access to given resource ID
+          description: Comma separated list of resource IDs. Return users that have access to one or more of the given resources.
           schema:
             type: string
-            format: uuid
         - name: hasAccessToResourceWithScope
           in: query
-          description: Require users to have given scope to the resource defined in hasAccessToResource parameter
+          description: Require users to have given scope to the resources defined in hasAccessToResource parameter
           schema:
             type: string
         - name: userIdentifier
