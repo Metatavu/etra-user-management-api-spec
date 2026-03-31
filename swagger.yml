@@ -385,8 +385,8 @@ paths:
   "/v1/groups/{groupId}/children":
     post:
       operationId: setOrCreateChildGroup
-      summary: Set or create child
-      description: Will just set the parent if group exists. Otherwise will create the group and set the parent.
+      summary: Create or attach child group
+      description: Creates a new child group under the target parent. If the request payload resolves to an existing Keycloak group identity, the existing group may be attached under the target parent instead of creating a new group. For explicit move semantics, use /v1/groups/{targetGroupId}/moveGroup.
       tags:
         - Groups
       requestBody:
@@ -394,7 +394,7 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/GroupRepresentation"
-        description: Payload
+        description: Child group payload. Passing normal group fields creates a new child. Explicit moves should use the dedicated moveGroup endpoint instead of relying on payload identity.
         required: true
       parameters:
         - name: groupId
@@ -406,7 +406,7 @@ paths:
             format: uuid
       responses:
         "200":
-          description: Updated or created group
+          description: Created or attached child group
           content:
             application/json:
               schema:
@@ -625,6 +625,42 @@ paths:
       responses:
         "201":
           description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  "/v1/groups/{targetGroupId}/moveGroup":
+    post:
+      operationId: moveGroupToGroup
+      summary: Move group under another group
+      description: Moves an existing source group under the target group.
+      tags:
+        - Groups
+      parameters:
+        - name: targetGroupId
+          in: path
+          required: true
+          description: Target parent group id
+          schema:
+            type: string
+            format: uuid
+        - name: sourceGroupId
+          in: query
+          required: true
+          description: Source group id to move
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Moved group
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GroupRepresentation"
         "default":
           description: Invalid request was sent to the server
           content:
