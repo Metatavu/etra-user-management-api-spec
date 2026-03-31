@@ -203,6 +203,11 @@ paths:
           description: if enabled search will be performed from all groups not just top level cloud groups
           schema:
             type: boolean
+        - name: nonCloudOnly
+          in: query
+          description: if enabled only groups outside cloud hierarchy will be returned
+          schema:
+            type: boolean
         - name: first
           in: query
           description: First result.
