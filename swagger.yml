@@ -1900,6 +1900,9 @@ components:
           type: integer
         enabled:
           type: boolean
+        expiresAt:
+          format: date-time
+          type: string
         totp:
           type: boolean
         federationLink:
