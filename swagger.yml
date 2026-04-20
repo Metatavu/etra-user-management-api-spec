@@ -2229,6 +2229,17 @@ components:
         valid:
           type: boolean
           description: Was validation was successful
+        cardCodeId:
+          type: string
+          format: uuid
+          description: Id of the existing card code.
+        userId:
+          type: string
+          format: uuid
+          description: Id of the existing user.
+        userName:
+          type: string
+          description: Username of the existing user.
         validationErrorType:
           $ref: "#/components/schemas/ValidationErrorType"
 
