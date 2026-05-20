@@ -2233,13 +2233,12 @@ components:
           type: string
           format: uuid
           description: Id of the existing card code.
-        userId:
+        cardCodeModifiedAt:
           type: string
-          format: uuid
-          description: Id of the existing user.
-        userName:
-          type: string
-          description: Username of the existing user.
+          format: date-time
+          description: Modified at date of the existing card code.
+        user:
+          $ref: "#/components/schemas/UserRepresentation"
         validationErrorType:
           $ref: "#/components/schemas/ValidationErrorType"
 
