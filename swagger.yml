@@ -118,6 +118,21 @@ paths:
               schema:
                 type: string
 
+  /v1/system/moveKeycloakPoliciesToDatabase:
+    post:
+      operationId: moveKeycloakPoliciesToDatabase
+      summary: migrates Keycloak policies into the local database
+      description: migrates Keycloak policies into the local database
+      tags:
+        - System
+      responses:
+        "200":
+          description: Migration result
+          content:
+            text/plain:
+              schema:
+                type: string
+
   /v1/system/index/refreshUsersIndex:
     get:
       operationId: refreshUsersIndex
@@ -1002,7 +1017,7 @@ paths:
     get:
       operationId: getUserResourceAccessScopes
       summary: Gets user resource access scopes
-      description: Gets user resource access for given resource scopes directly from Keycloak.
+      description: Gets user resource access scopes for a resource. Scopes are computed from API-managed policies while the resource remains in Keycloak.
       tags:
         - Users
       parameters:
@@ -1507,7 +1522,7 @@ paths:
     get:
       operationId: listResourcePolicies
       summary: Lists resource policies.
-      description: Lists resource policies.
+      description: Lists resource policies stored and managed by the API. Resources themselves remain in Keycloak.
       tags:
         - Resources
       parameters:
@@ -1546,7 +1561,7 @@ paths:
     post:
       operationId: createResourcePolicy
       summary: Creates new resource policy
-      description: Creates new resource policy
+      description: Creates new resource policy stored and managed by the API. Resources themselves remain in Keycloak.
       tags:
         - Resources
       requestBody:
@@ -1582,7 +1597,7 @@ paths:
     get:
       operationId: findResourcePolicy
       summary: Finds resource policy by id
-      description: Finds resource policy by id
+      description: Finds resource policy by id stored and managed by the API. Resources themselves remain in Keycloak.
       tags:
         - Resources
       parameters:
@@ -1616,7 +1631,7 @@ paths:
     put:
       operationId: updateResourcePolicy
       summary: Updates resource policy
-      description: Updates resource policy
+      description: Updates resource policy stored and managed by the API. Resources themselves remain in Keycloak.
       tags:
         - Resources
       requestBody:
@@ -1657,7 +1672,7 @@ paths:
     delete:
       operationId: deleteResourcePolicy
       summary: deletes resource policy
-      description: deletes resource policy
+      description: deletes resource policy stored and managed by the API. Resources themselves remain in Keycloak.
       tags:
         - Resources
       parameters:
@@ -2091,12 +2106,11 @@ components:
           type: string
         name:
           type: string
-        permissionIds:
+        scopes:
           type: array
-          description: List of permission ids
+          description: List of access scopes granted by this policy.
           items:
-            type: string
-            format: uuid
+            $ref: "#/components/schemas/ResourceAccessScope"
         type:
           $ref: "#/components/schemas/PolicyType"
         userIds:
@@ -2117,6 +2131,10 @@ components:
       enum:
         - USER
         - GROUP
+
+    ResourceAccessScope:
+      type: string
+      description: Access scope identifier, e.g. access or manage or shelving
 
     ResourcePermissionRefreshResponse:
       type: object
