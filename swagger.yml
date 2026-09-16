@@ -1788,14 +1788,81 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/allowedUsers/from-machine/request:
+    post:
+      operationId: requestAllowedUsersFromMachine
+      summary: Request allowed users from IoT Core
+      description: Resolves and sends allowed users for a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Allowed users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineAllowedUsersRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/allowedUsers/from-machine/protobuf/request:
+    post:
+      operationId: requestAllowedUsersProtobufFromMachine
+      summary: Request protobuf allowed users from IoT Core
+      description: Resolves and sends protobuf-encoded allowed users for a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Allowed users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineAllowedUsersRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
 
   schemas:
+    MachineAllowedUsersRequest:
+      type: object
+      required:
+        - machineCode
+      properties:
+        machineCode:
+          type: string
+          description: Machine code from the IoT Core topic.
+
     Error:
       type: object
       description: Error object
