@@ -1842,6 +1842,114 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /v1/users/groups/from-machine/request:
+    post:
+      operationId: requestUsersGroupsFromMachine
+      summary: Request user groups
+      description: Resolves and sends the groups for a card-code user to a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineCardCodeRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/accessToken/from-machine/request:
+    post:
+      operationId: requestAccessTokenForCardcodeFromMachine
+      summary: Request an access token for a card code
+      description: Resolves and sends a user access token to a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineCardCodeRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/resourceAccessScopes/from-machine/request:
+    post:
+      operationId: requestUserResourceAccessScopesFromMachine
+      summary: Request user resource access scopes
+      description: Resolves user resource access scopes and sends the change to a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineCardCodeRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /v1/users/idByCardcode/from-machine/request:
+    post:
+      operationId: requestUserIdByCardcodeFromMachine
+      summary: Request a user ID by card code
+      description: Resolves and sends a nullable user ID to a machine
+      security:
+        - apiKeyAuth: []
+      tags:
+        - Users
+        - IOTCore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MachineCardCodeRequest"
+        description: Payload
+        required: true
+      responses:
+        "204":
+          description: Successful request
+        "default":
+          description: Invalid request was sent to the server
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   securitySchemes:
     bearerAuth:
@@ -1862,6 +1970,19 @@ components:
         machineCode:
           type: string
           description: Machine code from the IoT Core topic.
+
+    MachineCardCodeRequest:
+      type: object
+      required:
+        - machineCode
+        - cardCode
+      properties:
+        machineCode:
+          type: string
+          description: Machine code from the IoT Core topic.
+        cardCode:
+          type: string
+          description: Card code from the IoT Core topic.
 
     Error:
       type: object
